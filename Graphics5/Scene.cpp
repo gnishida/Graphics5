@@ -18,15 +18,11 @@ using namespace std;
 
 #define HIGH_RES		1
 
-Scene *scene;// = new Scene();
-std::vector<Light*>* Scene::lights = new std::vector<Light*>();
+Scene *scene;
+Light* Scene::light = new Light(V3(-30.0f, 0.0f, -30.0f), Light::TYPE_DIRECTIONAL_LIGHT, 0.4f, 0.6f, 40.0f);
 
 Scene::Scene() {
 	mipmap_mode = true;
-
-	//lights.push_back(new Light(V3(30.0f, 0.0f, 30.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f));
-	lights->push_back(new Light(V3(-30.0f, 0.0f, -30.0f), Light::TYPE_DIRECTIONAL_LIGHT, 0.4f, 0.6f, 40.0f));
-	//lights.push_back(new Light(V3(-30.0f, 0.0f, 0.0f), Light::TYPE_DIRECTIONAL_LIGHT, 0.4f, 0.6f, 40.0f));
 
 	// create user interface
 	gui = new GUI();

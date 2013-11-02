@@ -7,7 +7,7 @@ class PPC;
 class Light {
 public:
 	enum { TYPE_DIRECTIONAL_LIGHT = 0, TYPE_POINT_LIGHT };
-private:
+
 	/** For the directional light, this is the direction. For the point light, this is the position. */
 	V3 position;
 

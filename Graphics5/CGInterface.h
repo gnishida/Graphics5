@@ -31,13 +31,14 @@ class ShaderOneInterface {
 	CGprogram fragmentProgram;
 
 	// uniform parameters, i.e parameters that have the same value for all geometry rendered
-	CGparameter vertexModelViewProj; // a matrix combining projection and modelview matrices
-	CGparameter vertexDF;
 	CGparameter geometryModelViewProj; // geometry shader
 	CGparameter geometryEF; 
-	CGparameter fragmentBlueHue;
-	CGparameter fragmentEye;
-	CGparameter fragmentTeapotCenter;
+	CGparameter vertexModelViewProj; // a matrix combining projection and modelview matrices
+	CGparameter fragmentLightDirection;
+	CGparameter fragmentEyePosition;
+	CGparameter fragmentKa;
+	CGparameter fragmentKd;
+	CGparameter fragmentKs;
 
 public:
 	ShaderOneInterface() {};

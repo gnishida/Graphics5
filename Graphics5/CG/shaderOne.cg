@@ -1,41 +1,54 @@
 struct VertexInput {
 	float4 position : POSITION;
-	float4 color	: COLOR0;
+	float4 color	: COLOR;
 };
 
 struct VertexOutput {
 	float4 position : POSITION;
-	float4 color	: COLOR0;
+	float4 color	: COLOR;
 };
 
 struct FragmentInput {
 	float4 position : POSITION;
-	float4 color	: COLOR0;
+	float3 normal	: NORMAL;
+	float4 color	: COLOR;
 };
 
 struct FragmentOutput {
-	float4 color	: COLOR0;
+	float4 color	: COLOR;
 };
 
 
 VertexOutput VertexMain(
 				VertexInput vi,
-				uniform float4x4 modelViewProj,
-				uniform float df) {
+				uniform float4x4 modelViewProj) {
 	VertexOutput vo;
 
 	vo.position = mul(modelViewProj, vi.position);
 	vo.color = vi.color;
+
 	return vo;
 }
 
 FragmentOutput FragmentMain(
 				FragmentInput fi,
-				uniform float blueHue,
-				uniform float3 eye,
-				uniform float3 teapotCenter) {
+				uniform float3 lightDirection,
+				uniform float3 eyePosition,
+				uniform float Ka,
+				uniform float Kd,
+				uniform float Ks) {
 	FragmentOutput fo;
-	fo.color = fi.color;
+
+	float3 L = normalize(lightDirection) * -1;
+
+	float ambient = Ka;
+	float diffuse = max(dot(L, fi.normal.xyz), 0);
+
+	float3 V = normalize(eyePosition - fi.position.xyz);
+	float specular = pow(max(dot(fi.normal.xyz * 2 - V, L), 0), Ks);
+	
+	fo.color.xyz = fi.color.xyz * (ambient + diffuse + specular);
+	fo.color.w = 1.0f;
 
 	return fo;
 }

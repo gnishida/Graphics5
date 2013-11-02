@@ -99,11 +99,13 @@ bool ShaderOneInterface::PerSessionInit(CGInterface *cgi) {
 	geometryEF = cgGetNamedParameter(geometryProgram, "ef" );
 	geometryModelViewProj = cgGetNamedParameter(geometryProgram, "modelViewProj" );
 #endif
-	vertexModelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj" );
-	vertexDF = cgGetNamedParameter(vertexProgram, "df" );
-	fragmentBlueHue = cgGetNamedParameter(fragmentProgram, "blueHue" );
-	fragmentEye = cgGetNamedParameter(fragmentProgram, "eye" );
-	fragmentTeapotCenter = cgGetNamedParameter(fragmentProgram, "teapotCenter" );
+	vertexModelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
+
+	fragmentLightDirection = cgGetNamedParameter(fragmentProgram, "lightDirection");
+	fragmentEyePosition = cgGetNamedParameter(fragmentProgram, "eyePosition");
+	fragmentKa = cgGetNamedParameter(fragmentProgram, "Ka");
+	fragmentKd = cgGetNamedParameter(fragmentProgram, "Kd");
+	fragmentKs = cgGetNamedParameter(fragmentProgram, "Ks");
 
 	return true;
 }
@@ -116,12 +118,12 @@ void ShaderOneInterface::PerFrameInit() {
 #endif
 
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
-	cgGLSetParameter1f(vertexDF, scene->vertexDF);
 
-	cgGLSetParameter1f(fragmentBlueHue, scene->blueHue);
-	cgGLSetParameter3fv(fragmentEye, (float*) &(scene->currentPPC->C));
-	V3 teapotCenter = scene->meshes[0]->GetCentroid();
-	cgGLSetParameter3fv(fragmentTeapotCenter, (float*)&teapotCenter);
+	cgGLSetParameter3fv(fragmentLightDirection, (float*) &(scene->light->position));
+	cgGLSetParameter3fv(fragmentEyePosition, (float*) &(scene->currentPPC->C));
+	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
+	cgGLSetParameter3fv(fragmentKd, (float*) &(scene->light->diffuse));
+	cgGLSetParameter3fv(fragmentKs, (float*) &(scene->light->specular));
 }
 
 void ShaderOneInterface::PerFrameDisable() {

@@ -34,13 +34,9 @@ public:
 	/** Triangle mesh object */
 	vector<TMesh*> meshes;
 
-	static vector<Light*>* lights;
+	static Light* light;
 
 	bool mipmap_mode;
-
-	float blueHue;
-	float vertexDF;
-	float geometryEF;
 
 public:
 	Scene();
