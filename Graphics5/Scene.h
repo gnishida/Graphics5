@@ -7,7 +7,6 @@
 #include "PPC.h"
 #include "TMesh.h"
 #include "Light.h"
-#include "CGInterface.h"
 #include <vector>
 #include <iostream>
 
@@ -39,9 +38,6 @@ public:
 
 	bool mipmap_mode;
 
-	/** for hw rendering */
-	CGInterface *cgi;
-	ShaderOneInterface *soi;
 	float blueHue;
 	float vertexDF;
 	float geometryEF;
@@ -53,7 +49,6 @@ public:
 	void ProjectorDemo();
 	void SaveProjector();
 	void Render();
-	void RenderHW();
 	void RenderProjectiveTextureMapping(FrameBuffer* fb, PPC* ppc);
 	void RenderShadowMapping(FrameBuffer* fb, PPC* ppc);
 	TIFFImage* CreateCubeMap(int size);

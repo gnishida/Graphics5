@@ -22,9 +22,6 @@ Scene *scene;// = new Scene();
 std::vector<Light*>* Scene::lights = new std::vector<Light*>();
 
 Scene::Scene() {
-	soi = NULL;
-	cgi = NULL;
-
 	mipmap_mode = true;
 
 	//lights.push_back(new Light(V3(30.0f, 0.0f, 30.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f));
@@ -56,12 +53,14 @@ Scene::Scene() {
 	gui->uiw->position(win->frame->w+u0 + 2*20, v0);
 	
 	// put an object in the scene
-	TMesh* mesh = new Box(V3(-10.0f, -10.0f, -10.0f), V3(10.0f, 10.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new TMesh();
+	mesh->Load("geometry/teapot1K.bin");
+	mesh->Translate(mesh->GetCentroid() * -1.0f);
 	meshes.push_back(mesh);
 
 	// create a camera
 	PPC* ppc = new PPC(60.0f, win->frame->w, win->frame->h);
-	ppc->LookAt(V3(0.0f, 0.0f, 0.0f), V3(0.0f, 0.0f, -1.0f), V3(0.0f, 1.0f, 0.0f), 100.0f);
+	ppc->LookAt(V3(0.0f, 0.0f, 0.0f), V3(0.0f, 0.0f, -1.0f), V3(0.0f, 1.0f, 0.0f), 150.0f);
 	ppcs.push_back(ppc);
 
 	currentPPC = ppcs[0];
@@ -74,7 +73,14 @@ Scene::Scene() {
  * This function is called when "Demo" button is clicked.
  */
 void Scene::Demo() {
-	RenderHW();
+	for (int i = 0; i < 1000; i++) {
+		for (int j = 0; j < meshes.size(); j++) {
+			meshes[j]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.1f);
+		}
+
+		Render();
+		Fl::wait();
+	}
 }
 
 /**
@@ -102,50 +108,8 @@ void Scene::SaveProjector() {
  * Render all the models.
  */
 void Scene::Render() {
-	win->frame->SetZB(0.0f);
-	win->frame->Set(WHITE);
-
-	for (int i = 0; i < meshes.size(); i++) {
-		meshes[i]->Render(win->frame, currentPPC);
-	}
-
+	win->Render(&meshes, currentPPC);
 	win->redraw();
-}
-
-void Scene::RenderHW() {
-  glEnable(GL_DEPTH_TEST);
-
-  if (!cgi) {
-    cgi = new CGInterface();
-    cgi->PerSessionInit();
-    soi = new ShaderOneInterface();
-    soi->PerSessionInit(cgi);
-  }
-
-  // frame setup
-  glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // view setup
-  float zNear = 1.0f;
-  float zFar = 1000.0f;
-  currentPPC->SetViewGL(zNear, zFar);
-
-  if (cgi) {
-    cgi->EnableProfiles();
-    soi->PerFrameInit();
-    soi->BindPrograms();
-  }
-
-	for (int tmi = 0; tmi < meshes.size(); tmi++) {
-		meshes[tmi]->RenderHW();
-	}
-
-  if (cgi) {
-    soi->PerFrameDisable();
-    cgi->DisableProfiles();
-  }
-
 }
 
 void Scene::RenderProjectiveTextureMapping(FrameBuffer* fb, PPC* ppc) {

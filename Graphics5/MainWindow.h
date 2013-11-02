@@ -24,6 +24,7 @@ public:
 	~MainWindow();
 
 	virtual void draw() = 0;
+	virtual void Render(std::vector<TMesh*>* meshes, PPC* ppc) = 0;
 
 	// function called back when event occurs (mouse, keyboard, etc)
 	int handle(int event);
