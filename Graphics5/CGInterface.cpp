@@ -13,15 +13,12 @@ CGInterface::CGInterface() {};
 void CGInterface::PerSessionInit() {
 	glEnable(GL_DEPTH_TEST);
 
-	CGprofile latestVertexProfile = cgGLGetLatestProfile(CG_GL_VERTEX);
+#ifdef GEOM_SHADER
 	CGprofile latestGeometryProfile = cgGLGetLatestProfile(CG_GL_GEOMETRY);
-	CGprofile latestPixelProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
 
 	if (latestGeometryProfile == CG_PROFILE_UNKNOWN) {
 		cerr << "ERROR: geometry profile is not available" << endl;
-#ifdef GEOM_SHADER
 		exit(0);
-#endif
 	}
 
 	cgGLSetOptimalOptions(latestGeometryProfile);
@@ -33,6 +30,10 @@ void CGInterface::PerSessionInit() {
 	cout << "Info: Latest GP Profile Supported: " << cgGetProfileString(latestGeometryProfile) << endl;
 
 	geometryCGprofile = latestGeometryProfile;
+#endif
+
+	CGprofile latestVertexProfile = cgGLGetLatestProfile(CG_GL_VERTEX);
+	CGprofile latestPixelProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
 
 	cout << "Info: Latest VP Profile Supported: " << cgGetProfileString(latestVertexProfile) << endl;
 	cout << "Info: Latest FP Profile Supported: " << cgGetProfileString(latestPixelProfile) << endl;
@@ -43,18 +44,18 @@ void CGInterface::PerSessionInit() {
 }
 
 void CGInterface::EnableProfiles() {
-	cgGLEnableProfile(vertexCGprofile);
 #ifdef GEOM_SHADER
 	cgGLEnableProfile(geometryCGprofile);
 #endif
+	cgGLEnableProfile(vertexCGprofile);
 	cgGLEnableProfile(pixelCGprofile);
 }
 
 void CGInterface::DisableProfiles() {
-	cgGLDisableProfile(vertexCGprofile);
 #ifdef GEOM_SHADER
 	cgGLDisableProfile(geometryCGprofile);
 #endif
+	cgGLDisableProfile(vertexCGprofile);
 	cgGLDisableProfile(pixelCGprofile);
 }
 
@@ -94,8 +95,10 @@ bool ShaderOneInterface::PerSessionInit(CGInterface *cgi) {
 	cgGLLoadProgram(fragmentProgram);
 
 	// build some parameters by name such that we can set them later...
-	//geometryEF = cgGetNamedParameter(geometryProgram, "ef" );
-	//geometryModelViewProj = cgGetNamedParameter(geometryProgram, "modelViewProj" );
+#ifdef GEOM_SHADER
+	geometryEF = cgGetNamedParameter(geometryProgram, "ef" );
+	geometryModelViewProj = cgGetNamedParameter(geometryProgram, "modelViewProj" );
+#endif
 	vertexModelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj" );
 	vertexDF = cgGetNamedParameter(vertexProgram, "df" );
 	fragmentBlueHue = cgGetNamedParameter(fragmentProgram, "blueHue" );
@@ -107,37 +110,28 @@ bool ShaderOneInterface::PerSessionInit(CGInterface *cgi) {
 
 void ShaderOneInterface::PerFrameInit() {
 	//set parameters
+#ifdef GEOM_SHADER
+	cgGLSetParameter1f(geometryEF, scene->geometryEF);
+	cgGLSetStateMatrixParameter(geometryModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
+#endif
+
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 	cgGLSetParameter1f(vertexDF, scene->vertexDF);
-
-	//cgGLSetParameter1f(geometryEF, scene->geometryEF);
-	//cgGLSetStateMatrixParameter(geometryModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 
 	cgGLSetParameter1f(fragmentBlueHue, scene->blueHue);
 	cgGLSetParameter3fv(fragmentEye, (float*) &(scene->currentPPC->C));
 	V3 teapotCenter = scene->meshes[0]->GetCentroid();
 	cgGLSetParameter3fv(fragmentTeapotCenter, (float*)&teapotCenter);
-
-#if 0
-  scene->diPPC->SetIntrinsicsHW();
-  scene->diPPC->SetExtrinsicsHW();
-  cgGLSetStateMatrixParameter(fragmentDIMVP,
-		CG_GL_MODELVIEW_PROJECTION_MATRIX, 
-		CG_GL_MATRIX_IDENTITY);
-  scene->ppc->SetIntrinsicsHW();
-  scene->ppc->SetExtrinsicsHW();
-#endif
 }
 
 void ShaderOneInterface::PerFrameDisable() {
 }
 
-
 void ShaderOneInterface::BindPrograms() {
 #ifdef GEOM_SHADER
 	cgGLBindProgram(geometryProgram);
 #endif
-	cgGLBindProgram( vertexProgram);
-	cgGLBindProgram( fragmentProgram);
+	cgGLBindProgram(vertexProgram);
+	cgGLBindProgram(fragmentProgram);
 }
 

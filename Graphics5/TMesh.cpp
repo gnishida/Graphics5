@@ -391,20 +391,18 @@ void TMesh::SetProjector(Projector* projector) {
  * Render this mesh by using HW renderer.
  */
 void TMesh::RenderHW() {
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (float*)verts);
 
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (float*)verts);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(3, GL_FLOAT, sizeof(Vertex), (float*)verts + 6);
 
-  glEnableClientState(GL_COLOR_ARRAY);
-  glColorPointer(3, GL_FLOAT, sizeof(Vertex), (float*)verts + sizeof(V3) * 2);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glNormalPointer(GL_FLOAT, sizeof(Vertex), (float*)verts + 9);
 
-  glEnableClientState(GL_NORMAL_ARRAY);
-  glNormalPointer(GL_FLOAT, sizeof(Vertex), (float*)verts + sizeof(V3) * 2);
+	glDrawElements(GL_TRIANGLES, 3*trisN, GL_UNSIGNED_INT, tris);
 
-  glDrawElements(GL_TRIANGLES, 3*trisN, GL_UNSIGNED_INT, tris);
-
-  glDisableClientState(GL_NORMAL_ARRAY);
-  glDisableClientState(GL_COLOR_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
-
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
