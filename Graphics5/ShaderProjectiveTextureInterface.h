@@ -22,7 +22,9 @@ public:
 	void PerFrameInit();
 
 	void SetPPC(PPC* ppc, float zNear, float zFar);
-	void BuildTextureMatrix(PPC* ppc, M44& textureMatrix);
-	void BuildPerspectiveMatrix(PPC* ppc, float zNear, float zFar, M44& perspectiveMatrix);
+
+	void BuildBiasMatrix(M44& biasMatrix);
+	void BuildLightViewMatrix(PPC* ppc, M44& lightViewMatrix);
+	void BuildProjectionMatrix(PPC* ppc, float zNear, float zFar, M44& perspectiveMatrix);
 };
 
