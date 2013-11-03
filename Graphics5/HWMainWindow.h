@@ -1,13 +1,13 @@
 #pragma once
 
 #include "MainWindow.h"
-#include "CGInterface.h"
+#include "ShaderInterface.h"
 
 class HWMainWindow : public MainWindow {
 private:
 	/** for hw rendering */
-	CGInterface *cgi;
-	ShaderOneInterface *soi;
+	//CGInterface *cgi;
+	ShaderInterface *si;
 
 public:
 	HWMainWindow(int u0, int v0, int _w, int _h);

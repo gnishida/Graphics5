@@ -1,15 +1,10 @@
 #include "HWMainWindow.h"
 #include "Scene.h"
-
-static const GLubyte
-myDemonTextureImage[3*(128*128)] = {
-/* RGB8 image data for a mipmapped 128x128 demon texture */
-#include "demon_image.h"
-};
+#include "ShaderTextureInterface.h"
+#include "ShaderPhongShadingInterface.h"
 
 HWMainWindow::HWMainWindow(int u0, int v0, int _w, int _h) : MainWindow(u0, v0, _w, _h) {
-	soi = NULL;
-	cgi = NULL;
+	si = NULL;
 }
 
 void HWMainWindow::draw() {
@@ -18,11 +13,11 @@ void HWMainWindow::draw() {
 void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	glEnable(GL_DEPTH_TEST);
 
-	if (!cgi) {
-		cgi = new CGInterface();
-		cgi->PerSessionInit();
-		soi = new ShaderOneInterface();
-		soi->PerSessionInit(cgi);
+	if (!si) {
+		//si = new ShaderTextureInterface();
+		si = new ShaderPhongShadingInterface();
+		si->InitProfiles();
+		si->InitProgram();
 	}
 
 	// frame setup
@@ -34,10 +29,10 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	float zFar = 1000.0f;
 	ppc->SetViewGL(zNear, zFar);
 
-	if (cgi) {
-		cgi->EnableProfiles();
-		soi->PerFrameInit();
-		soi->BindPrograms();
+	if (si) {
+		si->EnableProfiles();
+		si->PerFrameInit();
+		si->BindPrograms();
 	}
 
 	for (int i = 0; i < meshes->size(); i++) {
@@ -52,8 +47,8 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 		meshes->at(i)->RenderHW();
 	}
 
-	if (cgi) {
-		soi->PerFrameDisable();
-		cgi->DisableProfiles();
+	if (si) {
+		si->PerFrameDisable();
+		si->DisableProfiles();
 	}
 }
