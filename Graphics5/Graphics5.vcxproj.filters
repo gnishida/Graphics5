@@ -72,9 +72,6 @@
     <ClCompile Include="V3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HWFrameBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HWMainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="V3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HWFrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HWMainWindow.h">

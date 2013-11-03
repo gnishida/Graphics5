@@ -85,7 +85,6 @@
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="gui.cxx" />
-    <ClCompile Include="HWFrameBuffer.cpp" />
     <ClCompile Include="HWMainWindow.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="M33.cpp" />
@@ -110,7 +109,6 @@
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="glext.h" />
     <ClInclude Include="gui.h" />
-    <ClInclude Include="HWFrameBuffer.h" />
     <ClInclude Include="HWMainWindow.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="M33.h" />

@@ -36,8 +36,10 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 
 	for (int i = 0; i < meshes->size(); i++) {
 		if (meshes->at(i)->texture != NULL) {
-			glBindTexture(GL_TEXTURE_2D, 123);
-			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetWidth(), GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
+			glBindTexture(GL_TEXTURE_2D, 666);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
+			//gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetWidth(), GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		}
 
 		meshes->at(i)->RenderHW();
