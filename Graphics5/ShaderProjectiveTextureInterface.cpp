@@ -41,5 +41,24 @@ void ShaderProjectiveTextureInterface::BuildTextureMatrix(PPC* ppc, float textur
 	V3 x = (y ^ z).UnitVector();
 	y = (z ^ x).UnitVector();
 
-	textureMatrix[0] = 
+	textureMatrix[0] = x.x();
+	textureMatrix[1] = x.y();
+	textureMatrix[2] = x.z();
+	textureMatrix[3] = x * ppc->C * -1.0f;
+
+	textureMatrix[4] = y.x();
+	textureMatrix[5] = y.y();
+	textureMatrix[6] = y.z();
+	textureMatrix[7] = y * ppc->C * -1.0f;
+
+	textureMatrix[8] = z.x();
+	textureMatrix[9] = z.y();
+	textureMatrix[10] = z.z();
+	textureMatrix[11] = z * ppc->C * -1.0f;
+
+	textureMatrix[12] = 0;
+	textureMatrix[13] = 0;
+	textureMatrix[14] = 0;
+	textureMatrix[15] = 1;
+
 }
