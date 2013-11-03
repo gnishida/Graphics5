@@ -400,6 +400,9 @@ void TMesh::RenderHW() {
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glNormalPointer(GL_FLOAT, sizeof(Vertex), (float*)verts + 9);
 
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (float*)verts + 12);
+
 	glDrawElements(GL_TRIANGLES, 3*trisN, GL_UNSIGNED_INT, tris);
 
 	glDisableClientState(GL_NORMAL_ARRAY);

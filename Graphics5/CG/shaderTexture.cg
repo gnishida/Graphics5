@@ -4,11 +4,13 @@
 
 struct VertexInput {
 	float4 position : POSITION;
+	float3 color	: COLOR;
 	float2 texCoord	: TEXCOORD0;
 };
 
 struct VertexOutput {
 	float4 position : POSITION;
+	float3 color	: COLOR;
 	float2 texCoord	: TEXCOORD0;
 };
 
@@ -28,6 +30,7 @@ VertexOutput VertexMain(
 	VertexOutput vo;
 
 	vo.position = mul(modelViewProj, vi.position);
+	vo.color = vi.color;
 	vo.texCoord = vi.texCoord;
 
 	return vo;

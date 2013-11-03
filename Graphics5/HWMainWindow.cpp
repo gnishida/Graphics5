@@ -1,6 +1,12 @@
 #include "HWMainWindow.h"
 #include "Scene.h"
 
+static const GLubyte
+myDemonTextureImage[3*(128*128)] = {
+/* RGB8 image data for a mipmapped 128x128 demon texture */
+#include "demon_image.h"
+};
+
 HWMainWindow::HWMainWindow(int u0, int v0, int _w, int _h) : MainWindow(u0, v0, _w, _h) {
 	soi = NULL;
 	cgi = NULL;
@@ -36,9 +42,10 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 
 	for (int i = 0; i < meshes->size(); i++) {
 		if (meshes->at(i)->texture != NULL) {
-			glBindTexture(GL_TEXTURE_2D, 666);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
-			//gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetWidth(), GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			glBindTexture(GL_TEXTURE_2D, 123);
+			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		}
 

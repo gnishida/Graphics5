@@ -125,7 +125,7 @@ void ShaderOneInterface::PerFrameInit() {
 	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
 	cgGLSetParameter3fv(fragmentKd, (float*) &(scene->light->diffuse));
 	cgGLSetParameter3fv(fragmentKs, (float*) &(scene->light->specular));
-	cgGLSetTextureParameter(fragmentTex, 666);
+	cgGLSetTextureParameter(fragmentTex, 123);
 }
 
 void ShaderOneInterface::PerFrameDisable() {

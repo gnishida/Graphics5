@@ -49,16 +49,16 @@ Scene::Scene() {
 	gui->uiw->position(win->frame->w+u0 + 2*20, v0);
 	
 	// put an object in the scene
-	/*
 	TMesh* mesh = new TMesh();
 	mesh->Load("geometry/teapot1K.bin");
 	mesh->SetTexture("texture/tile.tif");
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
 	meshes.push_back(mesh);
-	*/
+	/*
 	TMesh* mesh = new Quad(100, 100, V3(1, 1, 1));
-	mesh->SetTexture("texture/sprite.tif");
+	mesh->SetTexture("texture/tile.tif");
 	meshes.push_back(mesh);
+	*/
 
 	// create a camera
 	PPC* ppc = new PPC(60.0f, win->frame->w, win->frame->h);
