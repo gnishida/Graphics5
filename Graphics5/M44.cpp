@@ -11,7 +11,7 @@ M44::M44(const V4& v1, const V4& v2, const V4& v3, const V4& v4) {
 	rows[0] = v1;
 	rows[1] = v2;
 	rows[2] = v3;
-	rows[2] = v4;
+	rows[3] = v4;
 }
 
 V4& M44::operator[](int i) {
@@ -40,5 +40,6 @@ M44 M44::operator*(const M44& m1) const {
 	ret.SetColumn(0, m0*m1.GetColumn(0));
 	ret.SetColumn(1, m0*m1.GetColumn(1));
 	ret.SetColumn(2, m0*m1.GetColumn(2));
+	ret.SetColumn(3, m0*m1.GetColumn(3));
 	return ret;
 }

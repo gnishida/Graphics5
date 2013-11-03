@@ -38,7 +38,11 @@ FragmentOutput FragmentMain(
 				uniform sampler2D projectiveMap) {
 	FragmentOutput fo;
 
-	fo.color = tex2Dproj(projectiveMap, fi.texCoord);
+	if (fi.texCoord.w >= 0) {
+		fo.color = tex2Dproj(projectiveMap, fi.texCoord);
+	} else {
+		fo.color = 0;
+	}
 
 	return fo;
 }

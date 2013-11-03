@@ -50,7 +50,7 @@ Scene::Scene() {
 	
 	// create a camera for the projector
 	PPC* ppc2 = new PPC(60.0f, win->frame->w, win->frame->h);
-	ppc2->LookAt(V3(0.0f, 0.0f, 0.0f), V3(0.0f, 0.0f, -1.0f), V3(0.0f, 1.0f, 0.0f), 150.0f);
+	ppc2->LookAt(V3(0.0f, 0.0f, 0.0f), V3(-1.0f, -1.0f, -1.0f), V3(-1.0f, 1.0f, -1.0f), 150.0f);
 
 	// create a frame buffer for the camera which is used for the projector
 	FrameBuffer fb0(win->frame->w, win->frame->h);
@@ -64,7 +64,7 @@ Scene::Scene() {
 	// put an object in the scene
 	TMesh* mesh = new TMesh();
 	mesh->Load("geometry/teapot1K.bin");
-	mesh->SetTexture("texture/reflection.tif");
+	mesh->SetTexture("texture/web.tif");
 	mesh->SetProjector(projector);
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
 	meshes.push_back(mesh);
@@ -72,7 +72,7 @@ Scene::Scene() {
 	TMesh* mesh2 = new Quad(100, 100, V3(1, 1, 1));
 	mesh2->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	mesh2->Translate(V3(0.0f, -26.0f, 0.0f));
-	mesh2->SetTexture("texture/reflection.tif");
+	mesh2->SetTexture("texture/web.tif");
 	mesh->SetProjector(projector);
 	meshes.push_back(mesh2);
 

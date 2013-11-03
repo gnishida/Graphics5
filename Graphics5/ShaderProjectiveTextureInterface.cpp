@@ -64,7 +64,8 @@ void ShaderProjectiveTextureInterface::BuildBiasMatrix(M44& biasMatrix) {
 
 void ShaderProjectiveTextureInterface::BuildLightViewMatrix(PPC* ppc, M44& lightViewMatrix) {
 	V3 z = (ppc->GetVD() * -1.0f).UnitVector();
-	V3 y = ppc->b;
+	V3 y = ppc->b * -1.0f;
+	//V3 y(0.0f, -1.0f, 0.0f);
 	V3 x = (y ^ z).UnitVector();
 	y = (z ^ x).UnitVector();
 
