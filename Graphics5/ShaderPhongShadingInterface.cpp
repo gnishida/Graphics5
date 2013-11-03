@@ -30,12 +30,3 @@ void ShaderPhongShadingInterface::PerFrameInit() {
 	cgGLSetParameter3fv(fragmentKd, (float*) &(scene->light->diffuse));
 	cgGLSetParameter3fv(fragmentKs, (float*) &(scene->light->specular));
 }
-
-void ShaderPhongShadingInterface::PerFrameDisable() {
-}
-
-void ShaderPhongShadingInterface::BindPrograms() {
-	cgGLBindProgram(vertexProgram);
-	cgGLBindProgram(fragmentProgram);
-}
-

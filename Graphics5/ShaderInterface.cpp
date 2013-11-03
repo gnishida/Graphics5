@@ -58,10 +58,21 @@ void ShaderInterface::DisableProfiles() {
 	cgGLDisableProfile(pixelCGprofile);
 }
 
+void ShaderInterface::BindPrograms() {
+	if (useGeometryShader) {
+		cgGLBindProgram(geometryProgram);
+	}
+	cgGLBindProgram(vertexProgram);
+	cgGLBindProgram(fragmentProgram);
+}
+
+void ShaderInterface::PerFrameDisable() {
+}
+
 bool ShaderInterface::loadGeometryProgram(char* filename, char* funcname) {
 	geometryProgram = cgCreateProgramFromFile(cgContext, CG_SOURCE, filename, geometryCGprofile, funcname, NULL);
 
-	if (geometryProgram == NULL)  {
+	if (geometryProgram == NULL) {
 		CGerror Error = cgGetError();
 		std::cerr << "Shader Geometry Program COMPILE ERROR: " << cgGetErrorString(Error) << std::endl;
 		std::cerr << cgGetLastListing(cgContext) << std::endl << std::endl;

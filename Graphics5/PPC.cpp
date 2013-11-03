@@ -258,27 +258,21 @@ V3 PPC::Unproject(const V3 &pp) {
 }
 
 void PPC::SetViewGL(float zNear, float zFar) {
+	// intrinsics
+	glViewport(0, 0, w, h);
 
+	float scf = zNear / GetFocalLength();
+	float wf = a.Length()*(float)w;
+	float hf = b.Length()*(float)h;
+	float left = -wf/2.0f*scf;
+	float top = hf/2.0f*scf;
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(left, -left, -top, top, zNear, zFar);
+	glMatrixMode(GL_MODELVIEW);
 
-  // intrinsics
-  glViewport(0, 0, w, h);
-
-  float scf = zNear / GetFocalLength();
-  float wf = a.Length()*(float)w;
-  float hf = b.Length()*(float)h;
-  float left = -wf/2.0f*scf;
-  float top = hf/2.0f*scf;
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glFrustum(left, -left, -top, top, zNear, zFar);
-  glMatrixMode(GL_MODELVIEW);
-
-  // extrinsics
-
-  V3 lap = C + GetVD();
-  glLoadIdentity();
-  gluLookAt(C[0], C[1], C[2], 
-    lap[0], lap[1], lap[2], 
-    -b[0], -b[1], -b[2]);
-
+	// extrinsics
+	V3 lap = C + GetVD();
+	glLoadIdentity();
+	gluLookAt(C[0], C[1], C[2], lap[0], lap[1], lap[2], -b[0], -b[1], -b[2]);
 }

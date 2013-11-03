@@ -15,8 +15,6 @@ public:
 	ShaderPhongShadingInterface();
 
 	bool InitProgram();
-	void BindPrograms();
 	void PerFrameInit();
-	void PerFrameDisable();
 };
 

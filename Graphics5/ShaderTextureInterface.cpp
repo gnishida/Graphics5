@@ -22,12 +22,3 @@ void ShaderTextureInterface::PerFrameInit() {
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 	cgGLSetTextureParameter(fragmentTex, 123);
 }
-
-void ShaderTextureInterface::PerFrameDisable() {
-}
-
-void ShaderTextureInterface::BindPrograms() {
-	cgGLBindProgram(vertexProgram);
-	cgGLBindProgram(fragmentProgram);
-}
-

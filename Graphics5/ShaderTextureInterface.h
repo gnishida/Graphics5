@@ -11,8 +11,6 @@ public:
 	ShaderTextureInterface();
 
 	bool InitProgram();
-	void BindPrograms();
 	void PerFrameInit();
-	void PerFrameDisable();
 };
 

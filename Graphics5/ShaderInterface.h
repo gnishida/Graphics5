@@ -22,14 +22,14 @@ public:
 	void InitProfiles();
 	void EnableProfiles();
 	void DisableProfiles();
+	void BindPrograms();
+	void PerFrameDisable();
 
 	bool loadGeometryProgram(char* filename, char* funcname);
 	bool loadVertexProgram(char* filename, char* funcname);
 	bool loadFragmentProgram(char* filename, char* funcname);
 
 	virtual bool InitProgram() = 0;
-	virtual void BindPrograms() = 0;
 	virtual void PerFrameInit() = 0;
-	virtual void PerFrameDisable() = 0;
 };
 
