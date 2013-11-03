@@ -15,8 +15,8 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	glEnable(GL_DEPTH_TEST);
 
 	if (!si) {
-		//si = new ShaderProjectiveTextureInterface();
-		si = new ShaderTextureInterface();
+		si = new ShaderProjectiveTextureInterface();
+		//si = new ShaderTextureInterface();
 		//si = new ShaderPhongShadingInterface();
 		si->InitProfiles();
 		si->InitProgram();
@@ -38,7 +38,7 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 
 	for (int i = 0; i < meshes->size(); i++) {
 		if (meshes->at(i)->projector != NULL) {
-			((ShaderProjectiveTextureInterface*)si)->SetPPC(meshes->at(i)->projector->ppc);
+			((ShaderProjectiveTextureInterface*)si)->SetPPC(meshes->at(i)->projector->ppc, zNear, zFar);
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glBindTexture(GL_TEXTURE_2D, 123);
 			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());

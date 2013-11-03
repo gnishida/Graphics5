@@ -90,6 +90,12 @@
     <ClCompile Include="ShaderProjectiveTextureInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="V4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="M44.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h">
@@ -165,6 +171,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProjectiveTextureInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="V4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="M44.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

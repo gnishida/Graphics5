@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ShaderInterface.h"
-#include "M33.h"
+#include "M44.h"
 #include "PPC.h"
 
 class ShaderProjectiveTextureInterface : public ShaderInterface {
@@ -11,6 +11,8 @@ private:
 	CGparameter fragmentProjectiveMap;
 
 	PPC* ppc;
+	float zNear;
+	float zFar;
 	M33 viewMat;
 
 public:
@@ -19,7 +21,8 @@ public:
 	bool InitProgram();
 	void PerFrameInit();
 
-	void SetPPC(PPC* ppc);
-	void BuildTextureMatrix(PPC* ppc, float textureMatrix[16]);
+	void SetPPC(PPC* ppc, float zNear, float zFar);
+	void BuildTextureMatrix(PPC* ppc, M44& textureMatrix);
+	void BuildPerspectiveMatrix(PPC* ppc, float zNear, float zFar, M44& perspectiveMatrix);
 };
 

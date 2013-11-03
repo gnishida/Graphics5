@@ -87,6 +87,7 @@
     <ClCompile Include="HWMainWindow.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="M33.cpp" />
+    <ClCompile Include="M44.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PPC.cpp" />
     <ClCompile Include="Projector.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="TMesh.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="V3.cpp" />
+    <ClCompile Include="V4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
@@ -114,6 +116,7 @@
     <ClInclude Include="HWMainWindow.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="M33.h" />
+    <ClInclude Include="M44.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="PPC.h" />
     <ClInclude Include="Projector.h" />
@@ -131,6 +134,7 @@
     <ClInclude Include="TMesh.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="V3.h" />
+    <ClInclude Include="V4.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CG\shaderOne.cg" />

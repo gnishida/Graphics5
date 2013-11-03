@@ -13,7 +13,7 @@ struct VertexOutput {
 
 struct FragmentInput {
 	float4 position : POSITION;
-	float2 texCoord	: TEXCOORD0;
+	float4 texCoord	: TEXCOORD0;
 };
 
 struct FragmentOutput {
@@ -38,11 +38,7 @@ FragmentOutput FragmentMain(
 				uniform sampler2D projectiveMap) {
 	FragmentOutput fo;
 
-	if (fi.texCoord.w >= 0) {
-		fo.color = tex2Dproj(projectiveMap, fi.texCoord);
-	} else {
-		fo.color = 0;
-	}
+	fo.color = tex2Dproj(projectiveMap, fi.texCoord);
 
 	return fo;
 }
