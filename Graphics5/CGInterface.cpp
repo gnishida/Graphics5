@@ -71,7 +71,7 @@ bool ShaderOneInterface::PerSessionInit(CGInterface *cgi) {
 	}
 #endif
 
-	vertexProgram = cgCreateProgramFromFile(cgi->cgContext, CG_SOURCE, "CG/shaderOne.cg", cgi->vertexCGprofile, "VertexMain", NULL);
+	vertexProgram = cgCreateProgramFromFile(cgi->cgContext, CG_SOURCE, "CG/shaderTexture.cg", cgi->vertexCGprofile, "VertexMain", NULL);
 	if (vertexProgram == NULL) {
 		CGerror Error = cgGetError();
 		cerr << "Shader One Geometry Program COMPILE ERROR: " << cgGetErrorString(Error) << endl;
@@ -79,7 +79,7 @@ bool ShaderOneInterface::PerSessionInit(CGInterface *cgi) {
 		return false;
 	}
 
-	fragmentProgram = cgCreateProgramFromFile(cgi->cgContext, CG_SOURCE, "CG/shaderOne.cg", cgi->pixelCGprofile, "FragmentMain", NULL);
+	fragmentProgram = cgCreateProgramFromFile(cgi->cgContext, CG_SOURCE, "CG/shaderTexture.cg", cgi->pixelCGprofile, "FragmentMain", NULL);
 	if (fragmentProgram == NULL)  {
 		CGerror Error = cgGetError();
 		cerr << "Shader One Fragment Program COMPILE ERROR: " << cgGetErrorString(Error) << endl;
@@ -106,6 +106,7 @@ bool ShaderOneInterface::PerSessionInit(CGInterface *cgi) {
 	fragmentKa = cgGetNamedParameter(fragmentProgram, "Ka");
 	fragmentKd = cgGetNamedParameter(fragmentProgram, "Kd");
 	fragmentKs = cgGetNamedParameter(fragmentProgram, "Ks");
+	fragmentTex = cgGetNamedParameter(fragmentProgram, "tex");
 
 	return true;
 }
@@ -124,6 +125,7 @@ void ShaderOneInterface::PerFrameInit() {
 	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
 	cgGLSetParameter3fv(fragmentKd, (float*) &(scene->light->diffuse));
 	cgGLSetParameter3fv(fragmentKs, (float*) &(scene->light->specular));
+	cgGLSetTextureParameter(fragmentTex, 123);
 }
 
 void ShaderOneInterface::PerFrameDisable() {

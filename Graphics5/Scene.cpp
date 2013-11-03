@@ -34,24 +34,30 @@ Scene::Scene() {
 	int sci = 2;
 	int w = sci*240;//640;
 	int h = sci*180;//360;
-	/*
 	win = new SWMainWindow(u0, v0, w, h);
 	win->label("SW Framebuffer");
 	win->show();
-	*/
 
 	// create HW framebuffer
+	/*
 	win = new HWMainWindow(u0, v0, w, h);
 	win->label("HW Framebuffer");
 	win->show();
+	*/
   
 	// position UI window
 	gui->uiw->position(win->frame->w+u0 + 2*20, v0);
 	
 	// put an object in the scene
+	/*
 	TMesh* mesh = new TMesh();
 	mesh->Load("geometry/teapot1K.bin");
+	mesh->SetTexture("texture/tile.tif");
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
+	meshes.push_back(mesh);
+	*/
+	TMesh* mesh = new Quad(100, 100, V3(1, 1, 1));
+	mesh->SetTexture("texture/tile.tif");
 	meshes.push_back(mesh);
 
 	// create a camera

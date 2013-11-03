@@ -273,3 +273,15 @@ V3 Texture::GetColor(unsigned int* image, int width, int height, float u, float 
 	
 	return c0 * (1 - s) * (1 - t) + c1 * s * (1 - t) + c2 * s * t  + c3 * (1 - s) * t;
 }
+
+unsigned int* Texture::GetImage() {
+	return images[0];
+}
+
+int Texture::GetWidth() {
+	return widths[0];
+}
+
+int Texture::GetHeight() {
+	return heights[0];
+}

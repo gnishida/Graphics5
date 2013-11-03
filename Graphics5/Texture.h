@@ -27,6 +27,10 @@ public:
 	void CreateMipMap(int width, int height);
 	void CreateMipMap(int width, int height, const TIFFImage &src, int x0, int y0);
 
+	unsigned int* GetImage();
+	int GetWidth();
+	int GetHeight();
+
 private:
 	V3 GetColor(unsigned int* image, int width, int height, float u, float v);
 };

@@ -10,37 +10,41 @@ void HWMainWindow::draw() {
 }
 
 void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
-  glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
-  if (!cgi) {
-    cgi = new CGInterface();
-    cgi->PerSessionInit();
-    soi = new ShaderOneInterface();
-    soi->PerSessionInit(cgi);
-  }
-
-  // frame setup
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // view setup
-  float zNear = 1.0f;
-  float zFar = 1000.0f;
-  ppc->SetViewGL(zNear, zFar);
-
-  if (cgi) {
-    cgi->EnableProfiles();
-    soi->PerFrameInit();
-    soi->BindPrograms();
-  }
-
-	for (int tmi = 0; tmi < meshes->size(); tmi++) {
-		meshes->at(tmi)->RenderHW();
+	if (!cgi) {
+		cgi = new CGInterface();
+		cgi->PerSessionInit();
+		soi = new ShaderOneInterface();
+		soi->PerSessionInit(cgi);
 	}
 
-  if (cgi) {
-    soi->PerFrameDisable();
-    cgi->DisableProfiles();
-  }
+	// frame setup
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// view setup
+	float zNear = 1.0f;
+	float zFar = 1000.0f;
+	ppc->SetViewGL(zNear, zFar);
+
+	if (cgi) {
+		cgi->EnableProfiles();
+		soi->PerFrameInit();
+		soi->BindPrograms();
+	}
+
+	for (int i = 0; i < meshes->size(); i++) {
+		if (meshes->at(i)->texture != NULL) {
+			glBindTexture(GL_TEXTURE_2D, 123);
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetWidth(), GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());
+		}
+
+		meshes->at(i)->RenderHW();
+	}
+
+	if (cgi) {
+		soi->PerFrameDisable();
+		cgi->DisableProfiles();
+	}
 }

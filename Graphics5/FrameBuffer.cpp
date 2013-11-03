@@ -324,12 +324,12 @@ V3 FrameBuffer::GetColor(PPC* ppc, const V3 &p, const Vertex &p0, const Vertex &
 
 	// interpolate the normal for Phong shading
 	V3 n = p0.n * (1.0f - s - t) + p1.n * s + p2.n * t;
-	V3 c1 = c1 + scene->light->GetColor(ppc, p, c, n);
-	if (c1.x() > 1.0f) c1[0] = 1.0f;
-	if (c1.y() > 1.0f) c1[1] = 1.0f;
-	if (c1.z() > 1.0f) c1[2] = 1.0f;
+	c = scene->light->GetColor(ppc, p, c, n);
+	if (c.x() > 1.0f) c[0] = 1.0f;
+	if (c.y() > 1.0f) c[1] = 1.0f;
+	if (c.z() > 1.0f) c[2] = 1.0f;
 
-	return c1;
+	return c;
 }
 
 void FrameBuffer::rasterizeShadow(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2) {
@@ -498,12 +498,12 @@ V3 FrameBuffer::GetColorFromTexture(PPC* ppc, const V3 &p, const Vertex &p0, con
 
 	// interpolate the normal for Phong shading
 	V3 n = p0.n * (1.0f - s - t) + p1.n * s + p2.n * t;
-	V3 c1 = c1 + scene->light->GetColor(ppc, p, c, n);
-	if (c1.x() > 1.0f) c1[0] = 1.0f;
-	if (c1.y() > 1.0f) c1[1] = 1.0f;
-	if (c1.z() > 1.0f) c1[2] = 1.0f;
+	c = scene->light->GetColor(ppc, p, c, n);
+	if (c.x() > 1.0f) c[0] = 1.0f;
+	if (c.y() > 1.0f) c[1] = 1.0f;
+	if (c.z() > 1.0f) c[2] = 1.0f;
 
-	return c1;
+	return c;
 }
 
 void FrameBuffer::rasterizeWithCubeMap(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2, CubeMap* cubeMap) {
@@ -591,12 +591,12 @@ V3 FrameBuffer::GetColorFromCubeMap(PPC* ppc, const V3 &p, const Vertex &p0, con
 	V3 c = cubeMap->lookup((p - ppc->C).reflect(n));
 
 	// apply Phong shading
-	V3 c1 = c1 + scene->light->GetColor(ppc, p, c, n);
-	if (c1.x() > 1.0f) c1[0] = 1.0f;
-	if (c1.y() > 1.0f) c1[1] = 1.0f;
-	if (c1.z() > 1.0f) c1[2] = 1.0f;
+	c = scene->light->GetColor(ppc, p, c, n);
+	if (c.x() > 1.0f) c[0] = 1.0f;
+	if (c.y() > 1.0f) c[1] = 1.0f;
+	if (c.z() > 1.0f) c[2] = 1.0f;
 
-	return c1;
+	return c;
 }
 
 void FrameBuffer::rasterizeByRayTracing(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2, CubeMap* cubeMap, Texture* texture) {
@@ -675,13 +675,13 @@ void FrameBuffer::rasterizeByRayTracing(PPC* ppc, const M33 &camMat, const Verte
 			}
 
 			// apply Phong shading
-			V3 c1 = c1 + scene->light->GetColor(ppc, p, c, n);
-			if (c1.x() > 1.0f) c1[0] = 1.0f;
-			if (c1.y() > 1.0f) c1[1] = 1.0f;
-			if (c1.z() > 1.0f) c1[2] = 1.0f;
+			c = scene->light->GetColor(ppc, p, c, n);
+			if (c.x() > 1.0f) c[0] = 1.0f;
+			if (c.y() > 1.0f) c[1] = 1.0f;
+			if (c.z() > 1.0f) c[2] = 1.0f;
 
 			// draw the pixel (u,v) with the color.
-			Set(u, v, c1.GetColor(), pp.z());
+			Set(u, v, c.GetColor(), pp.z());
 		}
 	}
 }

@@ -157,5 +157,8 @@
     <None Include="CG\shaderOne.cg">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="CG\shaderTexture.cg">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ typedef struct {
 } Vertex;
 
 class TMesh {
-protected:
+public:
 	/** the numver of vertices */
 	int vertsN;
 

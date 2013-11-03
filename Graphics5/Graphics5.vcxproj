@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CG\shaderOne.cg" />
+    <None Include="CG\shaderTexture.cg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
