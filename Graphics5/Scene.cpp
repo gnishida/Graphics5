@@ -64,7 +64,7 @@ Scene::Scene() {
 	// put an object in the scene
 	TMesh* mesh = new TMesh();
 	mesh->Load("geometry/teapot1K.bin");
-	mesh->SetTexture("texture/white.tif");
+	mesh->SetTexture("texture/web.tif");
 	mesh->SetProjector(projector);
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
 	meshes.push_back(mesh);
@@ -72,7 +72,7 @@ Scene::Scene() {
 	TMesh* mesh2 = new Quad(100, 100, V3(0.0f, 0.0f, 1.0f));
 	mesh2->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	mesh2->Translate(V3(0.0f, -26.0f, 0.0f));
-	mesh2->SetTexture("texture/white.tif");
+	mesh2->SetTexture("texture/web.tif");
 	mesh->SetProjector(projector);
 	meshes.push_back(mesh2);
 

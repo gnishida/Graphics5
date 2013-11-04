@@ -11,12 +11,13 @@ struct VertexInput {
 struct VertexOutput {
 	float4 position : POSITION;
 	float4 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
 	float4 color	: COLOR;
 };
 
 struct FragmentInput {
-	float4 position : POSITION;
 	float4 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
 	float4 color	: COLOR;
 };
 
@@ -33,6 +34,7 @@ VertexOutput VertexMain(
 
 	vo.position = mul(modelViewProj, vi.position);
 	vo.texCoord = mul(textureMatrix, vi.position);
+	vo.objectPos = vi.position;
 	vo.color = vi.color;
 
 	return vo;
@@ -40,12 +42,18 @@ VertexOutput VertexMain(
 
 FragmentOutput FragmentMain(
 				FragmentInput fi,
-				uniform sampler2DShadow shadowMap2) {
+				uniform sampler2DShadow shadowMap2,
+				uniform float4x4 modelViewProj) {
 	FragmentOutput fo;
 
 	float4 shadowCoeff = tex2Dproj(shadowMap2, fi.texCoord);
 	
-	fo.color = shadowCoeff * fi.color;
+	float4 pos = mul(modelViewProj, vi.position);
+	if (shadowCoeff.z <= pos.z) {
+		fo.color = fi.color;
+	} else {
+		fo.color = 0;
+	}
 
 	return fo;
 }

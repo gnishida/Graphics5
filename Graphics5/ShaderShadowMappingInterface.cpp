@@ -12,6 +12,7 @@ bool ShaderShadowMappingInterface::InitProgram() {
 	vertexModelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
 	vertexTextureMatrix = cgGetNamedParameter(vertexProgram, "textureMatrix");
 	fragmentShadowMap = cgGetNamedParameter(fragmentProgram, "shadowMap");
+	fragmentModelViewProj = cgGetNamedParameter(fragmentProgram, "modelViewProj");
 
 	return true;
 }
@@ -28,6 +29,7 @@ void ShaderShadowMappingInterface::PerFrameInit() {
 	lightViewMatrix = biasMatrix * projectionMatrix * lightViewMatrix;
 	cgSetMatrixParameterfr(vertexTextureMatrix, (float*)lightViewMatrix.rows);
 	cgGLSetTextureParameter(fragmentShadowMap, 123);
+	cgGLSetStateMatrixParameter(fragmentModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 }
 
 /**

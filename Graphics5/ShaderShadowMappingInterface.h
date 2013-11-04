@@ -9,6 +9,7 @@ private:
 	CGparameter vertexModelViewProj;
 	CGparameter vertexTextureMatrix;
 	CGparameter fragmentShadowMap;
+	CGparameter fragmentModelViewProj;
 
 	PPC* ppc;
 	float zNear;
