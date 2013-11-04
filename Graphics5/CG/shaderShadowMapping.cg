@@ -1,0 +1,52 @@
+/**
+ * This shader implements shadow mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float3 normal	: NORMAL;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float4 texCoord	: TEXCOORD0;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float4 position : POSITION;
+	float4 texCoord	: TEXCOORD0;
+	float4 color	: COLOR;
+};
+
+struct FragmentOutput {
+	float4 color	: COLOR;
+};
+
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj,
+				uniform float4x4 textureMatrix) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = mul(textureMatrix, vi.position);
+	vo.color = vi.color;
+
+	return vo;
+}
+
+FragmentOutput FragmentMain(
+				FragmentInput fi,
+				uniform sampler2DShadow shadowMap2) {
+	FragmentOutput fo;
+
+	float4 shadowCoeff = tex2Dproj(shadowMap2, fi.texCoord);
+	
+	fo.color = shadowCoeff * fi.color;
+
+	return fo;
+}
+

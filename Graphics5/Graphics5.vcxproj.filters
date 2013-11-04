@@ -96,6 +96,9 @@
     <ClCompile Include="M44.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderShadowMappingInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h">
@@ -179,15 +182,21 @@
     <ClInclude Include="M44.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderShadowMappingInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CG\shaderOne.cg">
-      <Filter>CG</Filter>
-    </None>
     <None Include="CG\shaderProjectiveTexture.cg">
       <Filter>CG</Filter>
     </None>
     <None Include="CG\shaderTexture.cg">
+      <Filter>CG</Filter>
+    </None>
+    <None Include="CG\shaderShadowMapping.cg">
+      <Filter>CG</Filter>
+    </None>
+    <None Include="CG\shaderPhongShading.cg">
       <Filter>CG</Filter>
     </None>
   </ItemGroup>

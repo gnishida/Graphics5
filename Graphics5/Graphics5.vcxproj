@@ -96,6 +96,7 @@
     <ClCompile Include="ShaderInterface.cpp" />
     <ClCompile Include="ShaderPhongShadingInterface.cpp" />
     <ClCompile Include="ShaderProjectiveTextureInterface.cpp" />
+    <ClCompile Include="ShaderShadowMappingInterface.cpp" />
     <ClCompile Include="ShaderTextureInterface.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="ShaderInterface.h" />
     <ClInclude Include="ShaderPhongShadingInterface.h" />
     <ClInclude Include="ShaderProjectiveTextureInterface.h" />
+    <ClInclude Include="ShaderShadowMappingInterface.h" />
     <ClInclude Include="ShaderTextureInterface.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Sphere.h" />
@@ -137,8 +139,9 @@
     <ClInclude Include="V4.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CG\shaderOne.cg" />
+    <None Include="CG\shaderPhongShading.cg" />
     <None Include="CG\shaderProjectiveTexture.cg" />
+    <None Include="CG\shaderShadowMapping.cg" />
     <None Include="CG\shaderTexture.cg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

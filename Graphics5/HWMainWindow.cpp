@@ -1,8 +1,9 @@
 #include "HWMainWindow.h"
 #include "Scene.h"
-#include "ShaderProjectiveTextureInterface.h"
 #include "ShaderTextureInterface.h"
 #include "ShaderPhongShadingInterface.h"
+#include "ShaderProjectiveTextureInterface.h"
+#include "ShaderShadowMappingInterface.h"
 
 HWMainWindow::HWMainWindow(int u0, int v0, int _w, int _h) : MainWindow(u0, v0, _w, _h) {
 	si = NULL;
@@ -15,9 +16,10 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	glEnable(GL_DEPTH_TEST);
 
 	if (!si) {
-		si = new ShaderProjectiveTextureInterface();
 		//si = new ShaderTextureInterface();
 		//si = new ShaderPhongShadingInterface();
+		//si = new ShaderProjectiveTextureInterface();
+		si = new ShaderShadowMappingInterface();
 		si->InitProfiles();
 		si->InitProgram();
 	}
