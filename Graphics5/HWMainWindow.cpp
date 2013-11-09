@@ -19,8 +19,8 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	if (!si) {
 		//si = new ShaderTextureInterface();
 		//si = new ShaderPhongShadingInterface();
-		si = new ShaderProjectiveTextureInterface();
-		//si = new ShaderShadowMappingInterface();
+		//si = new ShaderProjectiveTextureInterface();
+		si = new ShaderShadowMappingInterface();
 		si->InitProfiles();
 		si->InitProgram();
 	}

@@ -42,11 +42,11 @@ VertexOutput VertexMain(
 
 FragmentOutput FragmentMain(
 				FragmentInput fi,
-				uniform sampler2DShadow shadowMap2,
+				uniform sampler2DShadow shadowMap,
 				uniform float4x4 modelViewProj) {
 	FragmentOutput fo;
 
-	float4 shadowCoeff = tex2Dproj(shadowMap2, fi.texCoord);
+	float4 shadowCoeff = tex2Dproj(shadowMap, fi.texCoord);
 	
 	float4 pos = mul(modelViewProj, fi.position);
 	if (shadowCoeff.z <= pos.z) {
