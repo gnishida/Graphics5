@@ -16,18 +16,11 @@ Projector::Projector(PPC* ppc, FrameBuffer* fb0, FrameBuffer* fb1) {
 	this->fb1 = fb1;
 }
 
-void Projector::AddForegroundMesh(TMesh* mesh) {
-	this->foremeshes.push_back(mesh);
-}
-
-void Projector::AddBackgroundMesh(TMesh* mesh) {
-	this->backmeshes.push_back(mesh);
-}
-
 /**
  * Capture the scene so that the frame buffer is ready for projection.
  */
 void Projector::Capture() {
+	/*
 	fb0->Set(WHITE);
 	fb0->SetZB(0.0f);
 	for (int i = 0; i < foremeshes.size(); i++) {
@@ -39,64 +32,5 @@ void Projector::Capture() {
 	for (int i = 0; i < backmeshes.size(); i++) {
 		backmeshes[i]->Render(fb1, ppc);
 	}
-}
-
-void Projector::TranslateLR(float step) {
-	ppc->TranslateLR(step);
-
-	fb1->Set(WHITE);
-	fb1->SetZB(0.0f);
-	for (int i = 0; i < backmeshes.size(); i++) {
-		backmeshes[i]->Render(fb1, ppc);
-	}
-}
-
-void Projector::TranslateUD(float step) {
-	ppc->TranslateUD(step);
-
-	fb1->Set(WHITE);
-	fb1->SetZB(0.0f);
-	for (int i = 0; i < backmeshes.size(); i++) {
-		backmeshes[i]->Render(fb1, ppc);
-	}
-}
-
-void Projector::TranslateFB(float step) {
-	ppc->TranslateFB(step);
-
-	fb1->Set(WHITE);
-	fb1->SetZB(0.0f);
-	for (int i = 0; i < backmeshes.size(); i++) {
-		backmeshes[i]->Render(fb1, ppc);
-	}
-}
-
-void Projector::Pan(float angle) {
-	ppc->Pan(angle);
-
-	fb1->Set(WHITE);
-	fb1->SetZB(0.0f);
-	for (int i = 0; i < backmeshes.size(); i++) {
-		backmeshes[i]->Render(fb1, ppc);
-	}
-}
-
-void Projector::Tilt(float angle) {
-	ppc->Tilt(angle);
-
-	fb1->Set(WHITE);
-	fb1->SetZB(0.0f);
-	for (int i = 0; i < backmeshes.size(); i++) {
-		backmeshes[i]->Render(fb1, ppc);
-	}
-}
-
-void Projector::Roll(float angle) {
-	ppc->Roll(angle);
-
-	fb1->Set(WHITE);
-	fb1->SetZB(0.0f);
-	for (int i = 0; i < backmeshes.size(); i++) {
-		backmeshes[i]->Render(fb1, ppc);
-	}
+	*/
 }

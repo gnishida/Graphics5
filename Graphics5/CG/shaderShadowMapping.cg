@@ -47,13 +47,38 @@ FragmentOutput FragmentMain(
 	FragmentOutput fo;
 
 	float4 shadowCoeff = tex2Dproj(shadowMap, fi.texCoord);
+	//float shadow = tex2D(shadowMap, fi.texCoord.xy);
 	
+	fo.color = fi.color * shadowCoeff;
+	/*
 	float4 pos = mul(modelViewProj, fi.position);
-	if (shadowCoeff.z <= pos.z) {
+	if (fi.texCoord.z <= pos.z) {
 		fo.color = fi.color;
 	} else {
 		fo.color = 0;
 	}
+	*/
+
+	/*
+	fo.color.r = fi.texCoord.z * 0.005;
+	fo.color.g = fi.texCoord.z * 0.005;
+	fo.color.b = fi.texCoord.z * 0.005;
+	fo.color.a = 1;
+	*/
+	
+	/*
+	fo.color.r = shadow * 10000;
+	fo.color.g = shadow;
+	fo.color.b = shadow;
+	fo.color.a = 1;
+	*/
+
+	/*
+	fo.color.r = fi.position.z * 0.005;
+	fo.color.g = fi.position.z * 0.005;
+	fo.color.b = fi.position.z * 0.005;
+	fo.color.a = 1;
+	*/
 
 	return fo;
 }

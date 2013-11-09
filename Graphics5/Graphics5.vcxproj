@@ -81,7 +81,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="gui.cxx" />
     <ClCompile Include="HWMainWindow.cpp" />
@@ -90,6 +89,7 @@
     <ClCompile Include="M44.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PPC.cpp" />
+    <ClCompile Include="ProjectiveTexture.cpp" />
     <ClCompile Include="Projector.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -98,10 +98,11 @@
     <ClCompile Include="ShaderProjectiveTextureInterface.cpp" />
     <ClCompile Include="ShaderProjectorInterface.cpp" />
     <ClCompile Include="ShaderShadowMappingInterface.cpp" />
+    <ClCompile Include="ShaderSoftShadowMappingInterface.cpp" />
     <ClCompile Include="ShaderTextureInterface.cpp" />
-    <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="ShadowMap.cpp" />
+    <ClCompile Include="SoftShadowMap.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="SWMainWindow.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TIFFImage.cpp" />
     <ClCompile Include="TMesh.cpp" />
@@ -111,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
-    <ClInclude Include="CubeMap.h" />
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="glext.h" />
     <ClInclude Include="gui.h" />
@@ -121,6 +121,7 @@
     <ClInclude Include="M44.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="PPC.h" />
+    <ClInclude Include="ProjectiveTexture.h" />
     <ClInclude Include="Projector.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Scene.h" />
@@ -129,10 +130,11 @@
     <ClInclude Include="ShaderProjectiveTextureInterface.h" />
     <ClInclude Include="ShaderProjectorInterface.h" />
     <ClInclude Include="ShaderShadowMappingInterface.h" />
+    <ClInclude Include="ShaderSoftShadowMappingInterface.h" />
     <ClInclude Include="ShaderTextureInterface.h" />
-    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="ShadowMap.h" />
+    <ClInclude Include="SoftShadowMap.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="SWMainWindow.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TIFFImage.h" />
     <ClInclude Include="TMesh.h" />

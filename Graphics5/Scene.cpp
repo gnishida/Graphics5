@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "SWMainWindow.h"
 #include "HWMainWindow.h"
 #include "V3.h"
 #include "Box.h"
@@ -8,7 +7,9 @@
 #include "Sphere.h"
 #include "Light.h"
 #include "FrameBuffer.h"
-#include "Projector.h"
+#include "ProjectiveTexture.h"
+#include "ShadowMap.h"
+#include "SoftShadowMap.h"
 #include <time.h>
 #include <float.h>
 #include <iostream>
@@ -34,11 +35,6 @@ Scene::Scene() {
 	int sci = 2;
 	int w = sci*240;//640;
 	int h = sci*180;//360;
-	/*
-	win = new SWMainWindow(u0, v0, w, h);
-	win->label("SW Framebuffer");
-	win->show();
-	*/
 
 	// create HW framebuffer
 	win = new HWMainWindow(u0, v0, w, h);
@@ -48,32 +44,29 @@ Scene::Scene() {
 	// position UI window
 	gui->uiw->position(win->frame->w+u0 + 2*20, v0);
 	
-	// create a camera for the projector
+	// create a camera for the projective texture or shadow mapping
 	PPC* ppc2 = new PPC(60.0f, win->frame->w, win->frame->h);
 	ppc2->LookAt(V3(0.0f, 0.0f, 0.0f), V3(-1.0f, -1.0f, -1.0f), V3(-1.0f, 1.0f, -1.0f), 150.0f);
 
-	// create a frame buffer for the camera which is used for the projector
-	FrameBuffer* fb0 = new FrameBuffer(win->frame->w, win->frame->h);
-
-	// create a scene
-	FrameBuffer* fb1 = new FrameBuffer(win->frame->w, win->frame->h);
-
-	// create a projector
-	Projector* projector = new Projector(ppc2, fb0, fb1);
-
+	// craete a soft shadow map
+	SoftShadowMap* ssm = new SoftShadowMap(V3(100.0f, 100.0f, 100.0f), V3(-1.0f, -1.0f, -1.0f), 10.0f, 2);
+	//SoftShadowMap* ssm = new SoftShadowMap(V3(100.0f, 100.0f, 100.0f), V3(-1.0f, -1.0f, -1.0f), 10.0f, 16);
+	
 	// put an object in the scene
 	TMesh* mesh = new TMesh();
 	mesh->Load("geometry/teapot1K.bin");
-	mesh->SetTexture("texture/web.tif");
-	mesh->SetProjector(projector);
+	//mesh->SetTexture("texture/web.tif");
+	//mesh->SetProjectiveTexture(new ProjectiveTexture(ppc2, new Texture("texture/web.tif")));
+	mesh->SetSoftShadowMap(ssm);
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
 	meshes.push_back(mesh);
 
 	TMesh* mesh2 = new Quad(100, 100, V3(0.0f, 0.0f, 1.0f));
 	mesh2->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	mesh2->Translate(V3(0.0f, -26.0f, 0.0f));
-	mesh2->SetTexture("texture/web.tif");
-	mesh->SetProjector(projector);
+	//mesh2->SetTexture("texture/tile.tif");
+	//mesh->SetProjectiveTexture(new ProjectiveTexture(ppc2, new Texture("texture/web.tif")));
+	mesh->SetSoftShadowMap(ssm);
 	meshes.push_back(mesh2);
 
 	// create a camera
@@ -136,7 +129,7 @@ void Scene::RenderProjectiveTextureMapping(FrameBuffer* fb, PPC* ppc) {
 
 	// projective texture mapping
 	for (int i = 0; i < meshes.size(); i++) {
-		meshes[i]->RenderProjectiveTextureMapping(fb, ppc, win->frame, currentPPC);
+		//meshes[i]->RenderProjectiveTextureMapping(fb, ppc, win->frame, currentPPC);
 	}
 
 	win->redraw();
@@ -147,84 +140,10 @@ void Scene::RenderShadowMapping(FrameBuffer* fb, PPC* ppc) {
 	win->frame->Set(WHITE);
 
 	for (int i = 0; i < meshes.size(); i++) {
-		meshes[i]->RenderShadowMapping(fb, ppc, win->frame, currentPPC);
+		//meshes[i]->RenderShadowMapping(fb, ppc, win->frame, currentPPC);
 	}
 
 	win->redraw();
-}
-
-TIFFImage* Scene::CreateCubeMap(int size) {
-	PPC ppc(90.0f, size, size);
-
-	// render the back scene
-	FrameBuffer fb1(size, size);
-	fb1.SetZB(0.0f);
-	fb1.Set(BLACK);
-	for (int i= 0; i < meshes.size(); i++) {
-		meshes[i]->Render(&fb1, &ppc);
-	}
-
-	// render the left scene
-	FrameBuffer fb2(size, size);
-	ppc.Pan(90.0f);
-	fb2.SetZB(0.0f);
-	fb2.Set(BLACK);
-	for (int i= 0; i < meshes.size(); i++) {
-		meshes[i]->Render(&fb2, &ppc);
-	}
-
-	// render the front scene
-	FrameBuffer fb3(size, size);
-	ppc.Pan(90.0f);
-	fb3.SetZB(0.0f);
-	fb3.Set(BLACK);
-	for (int i= 0; i < meshes.size(); i++) {
-		meshes[i]->Render(&fb3, &ppc);
-	}
-
-	// render the right scene
-	FrameBuffer fb4(size, size);
-	ppc.Pan(90.0f);
-	fb4.SetZB(0.0f);
-	fb4.Set(BLACK);
-	for (int i= 0; i < meshes.size(); i++) {
-		meshes[i]->Render(&fb4, &ppc);
-	}
-
-	// render the top scene
-	FrameBuffer fb5(size, size);
-	ppc.Pan(90.0f);
-	ppc.Tilt(90.0f);
-	fb5.SetZB(0.0f);
-	fb5.Set(BLACK);
-	for (int i= 0; i < meshes.size(); i++) {
-		meshes[i]->Render(&fb5, &ppc);
-	}
-
-	// render the bottom scene
-	FrameBuffer fb6(size, size);
-	ppc.Tilt(-180.0f);
-	fb6.SetZB(0.0f);
-	fb6.Set(BLACK);
-	for (int i= 0; i < meshes.size(); i++) {
-		meshes[i]->Render(&fb6, &ppc);
-	}
-
-	int w = size * 3;
-	int h = size * 4;
-	TIFFImage* result = new TIFFImage(w, h);
-	for (int y = 0; y < size; y++) {
-		for (int x = 0; x < size; x++) {
-			result->pix[x + size + y * w] = fb1.pix[x + (size - y - 1) * size];
-			result->pix[x + (y + size * 2) * w] = fb2.pix[(size - x - 1) + y * size];
-			result->pix[x + size + (y + size * 2) * w] = fb3.pix[(size - x - 1) + y * size];
-			result->pix[x + size * 2 + (y + size * 2) * w] = fb4.pix[(size - x - 1) + y * size];
-			result->pix[x + size + (y + size * 3) * w] = fb5.pix[(size - x - 1) + y * size];
-			result->pix[x + size + (y + size) * w] = fb6.pix[x + (size - y - 1) * size];
-		}
-	}
-
-	return result;
 }
 
 V3 Scene::RayTrace(PPC* ppc, const V3 &p, const V3 &dir, float &dist) {

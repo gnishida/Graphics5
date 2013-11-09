@@ -47,18 +47,6 @@ public:
 	bool isCompletelyHidden(float u, float v, float z);
 	bool isPartiallyHidden(float u, float v, float z);
 
-	void rasterize(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2);
-	static V3 GetColor(PPC* ppc, const V3 &p, const Vertex &p0, const Vertex &p1, const Vertex &p2, float s, float t);
-	void rasterizeShadow(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2);
-	void rasterizeWithTexture(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2, Texture* texture);
-	static V3 GetColorFromTexture(PPC* ppc, const V3 &p, const Vertex &p0, const Vertex &p1, const Vertex &p2, Texture* texture, float s, float t);
-	void rasterizeWithCubeMap(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2, CubeMap* cubeMap);
-	static V3 GetColorFromCubeMap(PPC* ppc, const V3 &p, const Vertex &p0, const Vertex &p1, const Vertex &p2, CubeMap* cubeMap, float s, float t);
-	void rasterizeByRayTracing(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2, CubeMap* cubeMap, Texture* texture);
-
-	void RasterizeProjectiveTextureMapping(PPC* ppc, PPC* ppc0, FrameBuffer* fb0, const M33 &camMat, const V3 &Q1, const M33 &Q2, const Vertex &p0, const Vertex &p1, const Vertex &p2);
-	void RasterizeShadowMapping(PPC* ppc, PPC* ppc0, FrameBuffer* fb0, const M33 &camMat, const V3 &Q1, const M33 &Q2, const Vertex &p0, const Vertex &p1, const Vertex &p2);
-	void rasterizeWithProjector(PPC* ppc, Projector* projector, const M33 &camMat, const V3 &Q1, const M33 &Q2, const Vertex &p0, const Vertex &p1, const Vertex &p2);
 	V3 Get(int u, int v);
 	V3 Get(float u, float v);
 	V3 GetNearestColor(int u, int v);

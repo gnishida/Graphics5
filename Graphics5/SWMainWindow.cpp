@@ -12,7 +12,7 @@ void SWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	frame->Set(WHITE);
 
 	for (int i = 0; i < meshes->size(); i++) {
-		meshes->at(i)->Render(frame, ppc);
+		//meshes->at(i)->Render(frame, ppc);
 	}
 
 	redraw();

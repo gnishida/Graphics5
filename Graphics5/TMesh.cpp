@@ -15,22 +15,15 @@ TMesh::TMesh() {
 	trisN = 0;
 
 	texture = NULL;
-	cubeMap = NULL;
-	projector = NULL;
-	raytracing = false;
+	projTexture = NULL;
+	shadowMap = NULL;
+	softShadowMap = NULL;
 }
 
 TMesh::~TMesh() {
 	if (texture != NULL) {
 		delete texture;
 	}
-	if (cubeMap != NULL) {
-		delete cubeMap;
-	}
-}
-
-void TMesh::SetRaytracing() {
-	raytracing = true;
 }
 
 /**
@@ -146,133 +139,6 @@ void TMesh::Scale(const V3 &centroid, const V3 &size) {
 	}
 }
 
-void TMesh::RenderWireframe(FrameBuffer *fb, PPC *ppc) {
-	for (int i = 0; i < trisN; i++) {
-		fb->Draw3DSegment(ppc, verts[tris[i * 3]].v, verts[tris[i * 3]].c, verts[tris[i * 3 + 1]].v, verts[tris[i * 3 + 1]].c);
-		fb->Draw3DSegment(ppc, verts[tris[i * 3 + 1]].v, verts[tris[i * 3 + 1]].c, verts[tris[i * 3 + 2]].v, verts[tris[i * 3 + 2]].c);
-		fb->Draw3DSegment(ppc, verts[tris[i * 3 + 2]].v, verts[tris[i * 3 + 2]].c, verts[tris[i * 3]].v, verts[tris[i * 3]].c);
-	}
-}
-
-void TMesh::Render(FrameBuffer *fb, PPC *ppc) {
-	M33 camMat;
-	camMat.SetColumn(0, ppc->a);
-	camMat.SetColumn(1, ppc->b);
-	camMat.SetColumn(2, ppc->c);
-
-	// project all the vertices beforehand
-	for (int i = 0; i < vertsN; i++) {
-		ppc->Project(verts[i].v, verts[i].pv);
-	}
-
-	if (projector != NULL) {
-		M33 camMat2;
-		camMat2.SetColumn(0, projector->ppc->a);
-		camMat2.SetColumn(1, projector->ppc->b);
-		camMat2.SetColumn(2, projector->ppc->c);
-		camMat2 = camMat2.Inverted();
-
-		V3 Q1;
-		Q1 = camMat2 * (ppc->C - projector->ppc->C);
-
-		M33 Q2;
-		Q2 = camMat2 * camMat;
-
-		for (int i = 0; i < trisN; i++) {
-			fb->rasterizeWithProjector(ppc, projector, camMat, Q1, Q2, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]]);
-		}
-	} else if (raytracing) {
-		for (int i = 0; i < trisN; i++) {
-			fb->rasterizeByRayTracing(ppc, camMat, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]], cubeMap, texture);
-		}
-	} else if (cubeMap != NULL) {
-		cubeMap->SetCenter(GetCentroid());
-		for (int i = 0; i < trisN; i++) {
-			fb->rasterizeWithCubeMap(ppc, camMat, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]], cubeMap);
-		}
-	} else if (texture != NULL) {
-		for (int i = 0; i < trisN; i++) {
-			fb->rasterizeWithTexture(ppc, camMat, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]], texture);
-		}
-	} else {
-		for (int i = 0; i < trisN; i++) {
-			fb->rasterize(ppc, camMat, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]]);
-		}
-	}
-}
-
-/**
- * Render the mesh by using the projective texture mapping.
- *
- * @param fb0		the reference image plane
- * @param ppc0		the reference camera
- * @param fb1		the desired image plane
- * @param ppc1		the desired camera
- */
-void TMesh::RenderProjectiveTextureMapping(FrameBuffer *fb0, PPC *ppc0, FrameBuffer *fb1, PPC *ppc1) {
-	M33 camMat0;
-	camMat0.SetColumn(0, ppc0->a);
-	camMat0.SetColumn(1, ppc0->b);
-	camMat0.SetColumn(2, ppc0->c);
-	camMat0 = camMat0.Inverted();
-
-	M33 camMat1;
-	camMat1.SetColumn(0, ppc1->a);
-	camMat1.SetColumn(1, ppc1->b);
-	camMat1.SetColumn(2, ppc1->c);
-
-	V3 Q1;
-	Q1 = camMat0 * (ppc1->C - ppc0->C);
-
-	M33 Q2;
-	Q2 = camMat0 * camMat1;
-
-	// project all the vertices beforehand
-	for (int i = 0; i < vertsN; i++) {
-		ppc1->Project(verts[i].v, verts[i].pv);
-	}
-
-	for (int i = 0; i < trisN; i++) {
-		fb1->RasterizeProjectiveTextureMapping(ppc1, ppc0, fb0, camMat1, Q1, Q2, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]]);
-	}
-}
-
-/**
- * Render the mesh by using the shadow mapping.
- *
- * @param fb0		the reference image plane
- * @param ppc0		the reference camera
- * @param fb1		the desired image plane
- * @param ppc1		the desired camera
- */
-void TMesh::RenderShadowMapping(FrameBuffer *fb0, PPC *ppc0, FrameBuffer *fb1, PPC *ppc1) {
-	M33 camMat0;
-	camMat0.SetColumn(0, ppc0->a);
-	camMat0.SetColumn(1, ppc0->b);
-	camMat0.SetColumn(2, ppc0->c);
-	camMat0 = camMat0.Inverted();
-
-	M33 camMat1;
-	camMat1.SetColumn(0, ppc1->a);
-	camMat1.SetColumn(1, ppc1->b);
-	camMat1.SetColumn(2, ppc1->c);
-
-	V3 Q1;
-	Q1 = camMat0 * (ppc1->C - ppc0->C);
-
-	M33 Q2;
-	Q2 = camMat0 * camMat1;
-
-	// project all the vertices beforehand
-	for (int i = 0; i < vertsN; i++) {
-		ppc1->Project(verts[i].v, verts[i].pv);
-	}
-
-	for (int i = 0; i < trisN; i++) {
-		fb1->RasterizeShadowMapping(ppc1, ppc0, fb0, camMat1, Q1, Q2, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]]);
-	}
-}
-
 /**
  * Clear the allocated memory for vertices.
  */
@@ -340,8 +206,16 @@ void TMesh::SetTexture(const char* filename) {
 	texture = new Texture(filename);
 }
 
-void TMesh::SetCubeMap(const TIFFImage &image) {
-	cubeMap = new CubeMap(image);
+void TMesh::SetProjectiveTexture(ProjectiveTexture* projTexture) {
+	this->projTexture = projTexture;
+}
+
+void TMesh::SetShadowMap(ShadowMap* shadowMap) {
+	this->shadowMap = shadowMap;
+}
+
+void TMesh::SetSoftShadowMap(SoftShadowMap* softShadowMap) {
+	this->softShadowMap = softShadowMap;
 }
 
 bool TMesh::RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist) {
@@ -367,24 +241,16 @@ bool TMesh::RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist)
 		dist = ((1.0f - s - t) * p0.v.x() + p1.v.x() * s + p2.v.x() * t - p.x()) / dir.x();
 		if (dist <= 0.01f) continue;
 
-		if (cubeMap != NULL) {
-			col = FrameBuffer::GetColorFromCubeMap(ppc, p, p0, p1, p2, cubeMap, s, t);
-			return true;
-		} else if (texture != NULL) {
-			col = FrameBuffer::GetColorFromTexture(ppc, p, p0, p1, p2, texture, s, t);
+		if (texture != NULL) {
+			//col = FrameBuffer::GetColorFromTexture(ppc, p, p0, p1, p2, texture, s, t);
 			return true;
 		} else {
-			col = FrameBuffer::GetColor(ppc, p, p0, p1, p2, s, t);
-			//col = V3(0, 0, 1);
+			//col = FrameBuffer::GetColor(ppc, p, p0, p1, p2, s, t);
 			return true;
 		}
 	}
 
 	return false;
-}
-
-void TMesh::SetProjector(Projector* projector) {
-	this->projector = projector;
 }
 
 /**

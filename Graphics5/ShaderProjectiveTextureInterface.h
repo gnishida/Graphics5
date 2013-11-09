@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ShaderProjectorInterface.h"
+#include "ProjectiveTexture.h"
 #include "M44.h"
 #include "PPC.h"
 
@@ -10,15 +11,14 @@ private:
 	CGparameter vertexTextureMatrix;
 	CGparameter fragmentProjectiveMap;
 
+	ProjectiveTexture* projTexture;
+
 public:
 	ShaderProjectiveTextureInterface();
 
 	bool InitProgram();
 	void PerFrameInit();
 
-	void SetPPC(PPC* ppc, float zNear, float zFar);
-
-	
-	
+	void SetProjTexture(ProjectiveTexture* projTexture);
 };
 

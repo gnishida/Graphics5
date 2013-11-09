@@ -47,7 +47,6 @@ public:
 	void Render();
 	void RenderProjectiveTextureMapping(FrameBuffer* fb, PPC* ppc);
 	void RenderShadowMapping(FrameBuffer* fb, PPC* ppc);
-	TIFFImage* CreateCubeMap(int size);
 	V3 RayTrace(PPC* ppc, const V3 &p, const V3 &dir, float &dist);
 };
 

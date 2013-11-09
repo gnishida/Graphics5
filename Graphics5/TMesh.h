@@ -3,8 +3,9 @@
 #include "V3.h"
 #include "PPC.h"
 #include "Texture.h"
-#include "CubeMap.h"
-#include "Projector.h"
+#include "ProjectiveTexture.h"
+#include "ShadowMap.h"
+#include "SoftShadowMap.h"
 
 class FrameBuffer;
 
@@ -30,11 +31,10 @@ public:
 	/** the list of triangles */
 	unsigned int* tris;
 
-	bool raytracing;
-
 	Texture* texture;
-	CubeMap* cubeMap;
-	Projector* projector;
+	ProjectiveTexture* projTexture;
+	ShadowMap* shadowMap;
+	SoftShadowMap* softShadowMap;
 
 public:
 	TMesh();
@@ -46,10 +46,6 @@ public:
 	void Translate(const V3 &v);
 	void Scale(float t);
 	void Scale(const V3 &centroid, const V3 &size);
-	void RenderWireframe(FrameBuffer *fb, PPC *ppc);
-	void Render(FrameBuffer *fb, PPC *ppc);
-	void RenderProjectiveTextureMapping(FrameBuffer *fb0, PPC *ppc0, FrameBuffer *fb1, PPC *ppc1);
-	void RenderShadowMapping(FrameBuffer *fb0, PPC *ppc0, FrameBuffer *fb1, PPC *ppc1);
 
 	void Clear();
 	void RotateAbout(const V3 &axis, float angle);
@@ -58,9 +54,11 @@ public:
 
 	bool isInside2D(const V3 &p0, const V3 &p1, const V3 &p2, const V3 p) const;
 	void SetTexture(const char* filename);
-	void SetCubeMap(const TIFFImage &image);
+	void SetProjectiveTexture(ProjectiveTexture* projTexture);
+	void SetShadowMap(ShadowMap* shadowMap);
+	void SetSoftShadowMap(SoftShadowMap* softShadowMap);
+
 	bool RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist);
-	void SetProjector(Projector* projector);
 	void RenderHW();
 };
 
