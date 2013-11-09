@@ -105,6 +105,9 @@
     <ClCompile Include="ShaderSoftShadowMappingInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderStencilTextureInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h">
@@ -197,6 +200,9 @@
     <ClInclude Include="ShaderSoftShadowMappingInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderStencilTextureInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CG\shaderProjectiveTexture.cg">
@@ -209,6 +215,12 @@
       <Filter>CG</Filter>
     </None>
     <None Include="CG\shaderPhongShading.cg">
+      <Filter>CG</Filter>
+    </None>
+    <None Include="CG\shaderSoftShadowMapping.cg">
+      <Filter>CG</Filter>
+    </None>
+    <None Include="CG\shaderStencilTexture.cg">
       <Filter>CG</Filter>
     </None>
   </ItemGroup>

@@ -51,6 +51,9 @@ public:
 	V3 Get(float u, float v);
 	V3 GetNearestColor(int u, int v);
 	float GetZ(int u, int v);
+
+	void Rasterize(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2);
+	static V3 GetColor(PPC* ppc, const V3 &p, const Vertex &p0, const Vertex &p1, const Vertex &p2, float s, float t);
 };
 
 

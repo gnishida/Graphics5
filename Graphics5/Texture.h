@@ -6,6 +6,8 @@
 #include <Cg/cgGL.h>
 #include <Cg/cg.h>
 
+class FrameBuffer;
+
 class Texture {
 public:
 	GLuint texture_id;
@@ -16,7 +18,7 @@ public:
 
 public:
 	Texture();
-	Texture::Texture(const TIFFImage &image, int x0, int y0, int w, int h);
+	Texture(FrameBuffer* fb);
 	Texture(const char* filename);
 	~Texture();
 

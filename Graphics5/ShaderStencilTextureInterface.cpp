@@ -1,13 +1,12 @@
-#include "ShaderTextureInterface.h"
-#include "Scene.h"
+#include "ShaderStencilTextureInterface.h"
 
-ShaderTextureInterface::ShaderTextureInterface() {
+ShaderStencilTextureInterface::ShaderStencilTextureInterface() {
 }
 
-bool ShaderTextureInterface::InitProgram() {
-	if (!loadVertexProgram("CG/shaderTexture.cg", "VertexMain")) return false;
+bool ShaderStencilTextureInterface::InitProgram() {
+	if (!loadVertexProgram("CG/shaderStencilTexture.cg", "VertexMain")) return false;
 
-	if (!loadFragmentProgram("CG/shaderTexture.cg", "FragmentMain")) return false;
+	if (!loadFragmentProgram("CG/shaderStencilTexture.cg", "FragmentMain")) return false;
 
 	// build some parameters by name such that we can set them later...
 	vertexModelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
@@ -17,7 +16,7 @@ bool ShaderTextureInterface::InitProgram() {
 }
 
 
-void ShaderTextureInterface::PerFrameInit() {
+void ShaderStencilTextureInterface::PerFrameInit() {
 	GLuint texture_id = texture->Bind();
 
 	//set parameters
@@ -25,6 +24,6 @@ void ShaderTextureInterface::PerFrameInit() {
 	cgGLSetTextureParameter(fragmentTex, texture_id);
 }
 
-void ShaderTextureInterface::SetTexture(Texture* texture) {
+void ShaderStencilTextureInterface::SetTexture(Texture* texture) {
 	this->texture = texture;
 }

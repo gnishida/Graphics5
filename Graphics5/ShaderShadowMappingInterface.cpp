@@ -1,4 +1,5 @@
 #include "ShaderShadowMappingInterface.h"
+#include "TMesh.h"
 
 ShaderShadowMappingInterface::ShaderShadowMappingInterface() {
 }
@@ -19,19 +20,7 @@ bool ShaderShadowMappingInterface::InitProgram() {
 
 void ShaderShadowMappingInterface::PerFrameInit() {
 	// bind shadow mapping buffer
-	GLuint depthTexture;
-	glGenTextures(1, &depthTexture);
-	glBindTexture(GL_TEXTURE_2D, depthTexture);
-
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
+	GLuint texture_id = shadowMap->getTexture()->Bind();
 
 	//set parameters
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
@@ -46,10 +35,16 @@ void ShaderShadowMappingInterface::PerFrameInit() {
 	lightViewMatrix = biasMatrix * projectionMatrix * lightViewMatrix;
 	cgSetMatrixParameterfr(vertexTextureMatrix, (float*)lightViewMatrix.rows);
 
-	cgGLSetTextureParameter(fragmentShadowMap, depthTexture);
+	cgGLSetTextureParameter(fragmentShadowMap, texture_id);
 	cgGLSetStateMatrixParameter(fragmentModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 }
 
-void ShaderShadowMappingInterface::SetShadowMap(ShadowMap* shadowMap) {
+void ShaderShadowMappingInterface::SetShadowMap(ShadowMap* shadowMap, std::vector<TMesh*>* meshes) {
 	this->shadowMap = shadowMap;
+
+	// compute shadow map
+	for (int i = 0; i < meshes->size(); i++) {
+		meshes->at(i)->Render(shadowMap->fb, shadowMap->ppc);
+	}
 }
+

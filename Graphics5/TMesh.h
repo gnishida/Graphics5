@@ -59,6 +59,8 @@ public:
 	void SetSoftShadowMap(SoftShadowMap* softShadowMap);
 
 	bool RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist);
+
+	void Render(FrameBuffer *fb, PPC *ppc);
 	void RenderHW();
 };
 

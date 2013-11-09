@@ -99,6 +99,7 @@
     <ClCompile Include="ShaderProjectorInterface.cpp" />
     <ClCompile Include="ShaderShadowMappingInterface.cpp" />
     <ClCompile Include="ShaderSoftShadowMappingInterface.cpp" />
+    <ClCompile Include="ShaderStencilTextureInterface.cpp" />
     <ClCompile Include="ShaderTextureInterface.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="SoftShadowMap.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="ShaderProjectorInterface.h" />
     <ClInclude Include="ShaderShadowMappingInterface.h" />
     <ClInclude Include="ShaderSoftShadowMappingInterface.h" />
+    <ClInclude Include="ShaderStencilTextureInterface.h" />
     <ClInclude Include="ShaderTextureInterface.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="SoftShadowMap.h" />
@@ -146,6 +148,8 @@
     <None Include="CG\shaderPhongShading.cg" />
     <None Include="CG\shaderProjectiveTexture.cg" />
     <None Include="CG\shaderShadowMapping.cg" />
+    <None Include="CG\shaderSoftShadowMapping.cg" />
+    <None Include="CG\shaderStencilTexture.cg" />
     <None Include="CG\shaderTexture.cg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

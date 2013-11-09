@@ -55,18 +55,24 @@ Scene::Scene() {
 	// put an object in the scene
 	TMesh* mesh = new TMesh();
 	mesh->Load("geometry/teapot1K.bin");
-	//mesh->SetTexture("texture/web.tif");
+	mesh->SetTexture("texture/stencil.tif");
 	//mesh->SetProjectiveTexture(new ProjectiveTexture(ppc2, new Texture("texture/web.tif")));
-	mesh->SetSoftShadowMap(ssm);
+	//mesh->SetShadowMap(new ShadowMap(ppc2, w, h));
+	//mesh->SetSoftShadowMap(ssm);
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
+	//meshes.push_back(mesh);
+
+	mesh = new Box(V3(-20.0f, -20.0f, -20.0f), V3(20.0f, 20.0f, 20.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh->SetTexture("texture/stencil.tif");
 	meshes.push_back(mesh);
 
 	TMesh* mesh2 = new Quad(100, 100, V3(0.0f, 0.0f, 1.0f));
 	mesh2->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	mesh2->Translate(V3(0.0f, -26.0f, 0.0f));
-	//mesh2->SetTexture("texture/tile.tif");
+	mesh2->SetTexture("texture/stencil.tif");
 	//mesh->SetProjectiveTexture(new ProjectiveTexture(ppc2, new Texture("texture/web.tif")));
-	mesh->SetSoftShadowMap(ssm);
+	//mesh->SetShadowMap(new ShadowMap(ppc2, w, h));
+	//mesh->SetSoftShadowMap(ssm);
 	meshes.push_back(mesh2);
 
 	// create a camera

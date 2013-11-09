@@ -1,0 +1,58 @@
+/**
+ * This shader implements Stencil Texture mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float2 texCoord	: TEXCOORD0;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float2 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float2 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
+	float4 color	: COLOR;
+};
+
+struct FragmentOutput {
+	float4 color	: COLOR;
+	float depth		: DEPTH;
+};
+
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = vi.texCoord;
+	vo.objectPos = vi.position;
+	vo.color = vi.color;
+
+	return vo;
+}
+
+FragmentOutput FragmentMain(
+				FragmentInput fi,
+				uniform sampler2D tex : TEX0) {
+	FragmentOutput fo;
+
+	float4 color = tex2D(tex, fi.texCoord);
+
+	if (color.r == 0 && color.g == 0 && color.b == 0) {
+		fo.color = fi.color;
+	} else {
+		fo.depth = 0.9999999;
+	}
+
+	return fo;
+}
+

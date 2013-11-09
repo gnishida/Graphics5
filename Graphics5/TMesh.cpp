@@ -253,6 +253,22 @@ bool TMesh::RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist)
 	return false;
 }
 
+void TMesh::Render(FrameBuffer *fb, PPC *ppc) {
+	M33 camMat;
+	camMat.SetColumn(0, ppc->a);
+	camMat.SetColumn(1, ppc->b);
+	camMat.SetColumn(2, ppc->c);
+
+	// project all the vertices beforehand
+	for (int i = 0; i < vertsN; i++) {
+		ppc->Project(verts[i].v, verts[i].pv);
+	}
+
+	for (int i = 0; i < trisN; i++) {
+		fb->Rasterize(ppc, camMat, verts[tris[i * 3]], verts[tris[i * 3 + 1]], verts[tris[i * 3 + 2]]);
+	}
+}
+
 /**
  * Render this mesh by using HW renderer.
  */

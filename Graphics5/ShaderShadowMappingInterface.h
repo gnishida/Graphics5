@@ -4,6 +4,9 @@
 #include "M44.h"
 #include "PPC.h"
 #include "ShadowMap.h"
+#include <vector>
+
+class TMesh;
 
 class ShaderShadowMappingInterface : public ShaderProjectorInterface {
 private:
@@ -20,6 +23,6 @@ public:
 	bool InitProgram();
 	void PerFrameInit();
 
-	void SetShadowMap(ShadowMap* shadowMap);
+	void SetShadowMap(ShadowMap* shadowMap, std::vector<TMesh*>* meshes);
 };
 

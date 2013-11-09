@@ -311,3 +311,78 @@ V3 FrameBuffer::GetNearestColor(int u, int v) {
 float FrameBuffer::GetZ(int u, int v) {
 	return zb[(h-1-v)*w+u];
 }
+
+void FrameBuffer::Rasterize(PPC* ppc, const M33 &camMat, const Vertex &p0, const Vertex &p1, const Vertex &p2) {
+	AABB box;
+
+	// if one of the vertices are behind the camera, skip this triangle
+	if (p0.pv.x() == std::numeric_limits<float>::max() ||
+		p1.pv.x() == std::numeric_limits<float>::max() ||
+		p2.pv.x() == std::numeric_limits<float>::max()) return;
+
+	// compute the bounding box
+	box.AddPoint(p0.pv);
+	box.AddPoint(p1.pv);
+	box.AddPoint(p2.pv);
+
+	// the bounding box should be inside the screen
+	int u_min = (int)box.minCorner().x();
+	if (u_min < 0) u_min = 0;;
+	int u_max = (int)box.maxCorner().x();
+	if (u_max >= w) u_max = w - 1;
+	int v_min = (int)box.minCorner().y();
+	if (v_min < 0) v_min = 0;
+	int v_max = (int)box.maxCorner().y();
+	if (v_max >= h) v_max = h - 1;
+
+	// setup some variables
+	float denom = ((p1.pv - p0.pv) ^ (p2.pv - p0.pv)).z();
+	M33 Q;
+	Q.SetColumn(0, p0.v - ppc->C);
+	Q.SetColumn(1, p1.v - ppc->C);
+	Q.SetColumn(2, p2.v - ppc->C);
+	Q = Q.Inverted() * camMat;
+
+	for (int u = u_min; u <= u_max; u++) {
+		for (int v = v_min; v <= v_max; v++) {
+			V3 pp((u + 0.5f) * ppc->a.Length(), (v + 0.5f) * ppc->b.Length(), 0.0f);
+
+			float s = ((pp - p0.pv) ^ (p2.pv - p0.pv)).z() / denom;
+			float t = -((pp - p0.pv) ^ (p1.pv - p0.pv)).z() / denom;
+
+			// if the point is outside the triangle, skip it.
+			if (s < 0 || s > 1 || t < 0 || t > 1 || s + t > 1) continue;
+			//if (s < -0.01f || s > 1.01f || t < -0.01f || t > 1.01f || s + t > 1.01f) continue;
+				
+			V3 a = Q * V3((float)u + 0.5f, (float)v + 0.5f, 1.0f);
+			float w2 = a.x() + a.y() + a.z();
+			float s2 = a.y() / w2;
+			float t2 = a.z() / w2;
+
+			// locate the corresponding point in the model space.
+			V3 p = p0.v * (1 - s2 - t2) + p1.v * s2 + p2.v * t2;
+
+			// if the point is behind the camera, skip this pixel.
+			if (!ppc->Project(p, pp)) continue;
+
+			// check if the point is occluded by other triangles.
+			if (zb[(h-1-v)*w+u] >= pp.z()) continue;
+			
+			V3 c1 = GetColor(ppc, p, p0, p1, p2, s2, t2);
+
+			// draw the pixel (u,v) with the interpolated color.
+			Set(u, v, c1.GetColor(), pp.z());
+		}
+	}
+}
+
+V3 FrameBuffer::GetColor(PPC* ppc, const V3 &p, const Vertex &p0, const Vertex &p1, const Vertex &p2, float s, float t) {
+	// interpolate the color
+	V3 c = p0.c * (1.0f - s - t) + p1.c * s + p2.c * t;
+
+	// interpolate the normal for Phong shading
+	V3 n = p0.n * (1.0f - s - t) + p1.n * s + p2.n * t;
+	c = scene->light->GetColor(ppc, p, c, n);
+
+	return c;
+}
