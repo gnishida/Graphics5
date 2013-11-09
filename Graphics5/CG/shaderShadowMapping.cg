@@ -48,7 +48,7 @@ FragmentOutput FragmentMain(
 
 	float4 shadowCoeff = tex2Dproj(shadowMap2, fi.texCoord);
 	
-	float4 pos = mul(modelViewProj, vi.position);
+	float4 pos = mul(modelViewProj, fi.position);
 	if (shadowCoeff.z <= pos.z) {
 		fo.color = fi.color;
 	} else {

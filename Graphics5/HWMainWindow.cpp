@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "ShaderTextureInterface.h"
 #include "ShaderPhongShadingInterface.h"
+#include "ShaderProjectorInterface.h"
 #include "ShaderProjectiveTextureInterface.h"
 #include "ShaderShadowMappingInterface.h"
 
@@ -18,8 +19,8 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	if (!si) {
 		//si = new ShaderTextureInterface();
 		//si = new ShaderPhongShadingInterface();
-		//si = new ShaderProjectiveTextureInterface();
-		si = new ShaderShadowMappingInterface();
+		si = new ShaderProjectiveTextureInterface();
+		//si = new ShaderShadowMappingInterface();
 		si->InitProfiles();
 		si->InitProgram();
 	}
@@ -40,7 +41,7 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 
 	for (int i = 0; i < meshes->size(); i++) {
 		if (meshes->at(i)->projector != NULL) {
-			((ShaderProjectiveTextureInterface*)si)->SetPPC(meshes->at(i)->projector->ppc, zNear, zFar);
+			((ShaderProjectorInterface*)si)->SetPPC(meshes->at(i)->projector->ppc, zNear, zFar);
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glBindTexture(GL_TEXTURE_2D, 123);
 			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, meshes->at(i)->texture->GetWidth(), meshes->at(i)->texture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, meshes->at(i)->texture->GetImage());

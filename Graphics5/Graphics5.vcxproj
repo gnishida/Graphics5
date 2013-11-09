@@ -96,6 +96,7 @@
     <ClCompile Include="ShaderInterface.cpp" />
     <ClCompile Include="ShaderPhongShadingInterface.cpp" />
     <ClCompile Include="ShaderProjectiveTextureInterface.cpp" />
+    <ClCompile Include="ShaderProjectorInterface.cpp" />
     <ClCompile Include="ShaderShadowMappingInterface.cpp" />
     <ClCompile Include="ShaderTextureInterface.cpp" />
     <ClCompile Include="SkyBox.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="ShaderInterface.h" />
     <ClInclude Include="ShaderPhongShadingInterface.h" />
     <ClInclude Include="ShaderProjectiveTextureInterface.h" />
+    <ClInclude Include="ShaderProjectorInterface.h" />
     <ClInclude Include="ShaderShadowMappingInterface.h" />
     <ClInclude Include="ShaderTextureInterface.h" />
     <ClInclude Include="SkyBox.h" />

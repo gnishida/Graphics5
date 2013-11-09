@@ -53,13 +53,13 @@ Scene::Scene() {
 	ppc2->LookAt(V3(0.0f, 0.0f, 0.0f), V3(-1.0f, -1.0f, -1.0f), V3(-1.0f, 1.0f, -1.0f), 150.0f);
 
 	// create a frame buffer for the camera which is used for the projector
-	FrameBuffer fb0(win->frame->w, win->frame->h);
+	FrameBuffer* fb0 = new FrameBuffer(win->frame->w, win->frame->h);
 
 	// create a scene
-	FrameBuffer fb1(win->frame->w, win->frame->h);
+	FrameBuffer* fb1 = new FrameBuffer(win->frame->w, win->frame->h);
 
 	// create a projector
-	Projector* projector = new Projector(ppc2, &fb0, &fb1);
+	Projector* projector = new Projector(ppc2, fb0, fb1);
 
 	// put an object in the scene
 	TMesh* mesh = new TMesh();
