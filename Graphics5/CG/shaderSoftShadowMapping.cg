@@ -56,18 +56,6 @@ FragmentOutput FragmentMain(
 				uniform float Ks) {
 	FragmentOutput fo;
 
-	// Phong shading
-	float3 L = normalize(lightOrig - fi.position);
-
-	float ambient = Ka;
-	float diffuse = max(dot(L, fi.normal), 0);
-
-	float3 V = normalize(eyePosition - fi.position);
-	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks);
-	
-	fo.color.rgb = fi.color.rgb * (ambient + diffuse + specular);
-	fo.color.a = 1;
-
 	// Compute the visibility to the light sources
 	float count = 0.0f;
 	for (int v = 0; v < numLight; v++) {
@@ -117,10 +105,19 @@ FragmentOutput FragmentMain(
 			}
 		}
 	}
+
+	// Phong shading
+	float3 L = normalize(lightOrig - fi.position);
+
+	float ambient = Ka;
+	float diffuse = max(dot(L, fi.normal), 0) * count / numLight / numLight;
+
+	float3 V = normalize(eyePosition - fi.position);
+	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks);
 	
-	// define the color according to the visibility
-	fo.color.rgb = fo.color.rgb * count / numLight / numLight;
+	fo.color.rgb = fi.color.rgb * (ambient + diffuse + specular);
 	fo.color.a = 1;
+
 
 	return fo;
 }

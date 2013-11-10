@@ -174,6 +174,7 @@ void TMesh::RotateAbout(const V3 &axis, float angle) {
 void TMesh::RotateAbout(const V3 &axis, float angle, const V3 &orig) {
 	for (int i = 0; i < vertsN; i++) {
 		verts[i].v = verts[i].v.RotateAbout(axis, angle, orig);
+		verts[i].n = verts[i].n.RotateAbout(axis, angle, orig);
 	}
 }
 

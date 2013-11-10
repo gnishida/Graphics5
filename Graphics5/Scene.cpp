@@ -18,7 +18,7 @@ using namespace std;
 #define HIGH_RES		1
 
 Scene *scene;
-Light* Scene::light = new Light(V3(200.0f, 100.0f, 200.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
+Light* Scene::light = new Light(V3(200.0f, 100.0f, 0.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
 
 Scene::Scene() {
 	mipmap_mode = true;
@@ -71,19 +71,28 @@ void Scene::Demo() {
 	meshes.push_back(mesh);
 
 	for (int i = 0; i < 1000; i++) {
+		//light->ambient = 0.4f + cosf((float)i * M_PI * 0.005) * 0.4f;
+		//light->diffuse = 0.5f + cosf((float)i * M_PI * 0.005) * 0.5f;
+		
+		//light->position[0] += (i % 200 < 100) ? 1.0f : -1.0f;
+
+		/*
 		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
 		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
 		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		*/
 
 		Render();
 		Fl::wait();
 	}
 
 	// release the memory
+	/*
 	for (int i = 0; i < meshes.size(); i++) {
 		delete meshes[i];
 	}
 	meshes.clear();
+	*/
 }
 
 /**
