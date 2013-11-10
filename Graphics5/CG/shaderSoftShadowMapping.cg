@@ -12,12 +12,14 @@ struct VertexOutput {
 	float4 position : POSITION;
 	float4 texCoord	: TEXCOORD0;
 	float4 objectPos: TEXCOORD1;
+	float3 normal	: TEXCOORD2;
 	float4 color	: COLOR;
 };
 
 struct FragmentInput {
 	float4 texCoord	: TEXCOORD0;
 	float4 position : TEXCOORD1;
+	float3 normal	: TEXCOORD2;
 	float4 color	: COLOR;
 };
 
@@ -36,6 +38,7 @@ VertexOutput VertexMain(
 	vo.texCoord = mul(textureMatrix, vi.position);
 	vo.objectPos = vi.position;
 	vo.color = vi.color;
+	vo.normal = vi.normal;
 
 	return vo;
 }
@@ -46,9 +49,26 @@ FragmentOutput FragmentMain(
 				uniform float3 meshVerts[24 * 3],
 				uniform float3 lightOrig,
 				uniform float lightStep,
-				uniform float numLight) {
+				uniform float numLight,
+				uniform float3 eyePosition,
+				uniform float Ka,
+				uniform float Kd,
+				uniform float Ks) {
 	FragmentOutput fo;
 
+	// Phong shading
+	float3 L = normalize(lightOrig - fi.position);
+
+	float ambient = Ka;
+	float diffuse = max(dot(L, fi.normal), 0);
+
+	float3 V = normalize(eyePosition - fi.position);
+	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks);
+	
+	fo.color.rgb = fi.color.rgb * (ambient + diffuse + specular);
+	fo.color.a = 1;
+
+	// Compute the visibility to the light sources
 	float count = 0.0f;
 	for (int v = 0; v < numLight; v++) {
 		for (int u = 0; u < numLight; u++) {
@@ -56,6 +76,7 @@ FragmentOutput FragmentMain(
 			light.x += u * lightStep;
 			light.y += v * lightStep;
 
+			// Check the intersection with each triangle
 			int intersected = 0;
 			for (int i = 0; i < 12 * 3; i++) {
 				int tris0 = (int)meshTris[i * 3];
@@ -67,22 +88,15 @@ FragmentOutput FragmentMain(
 
 				float3 n = normalize(cross(v1 - v0, v2 - v0));
 
-				// test 1
+				// test 1 (r should be between 0 and 1)
 				float denom = dot(n, light - fi.position.xyz);
 				if (denom == 0.0f) continue;
 				float numer = dot(n, v0 - fi.position.xyz);
 				float r = numer / denom;
-			
-				/*
-				fo.color.r = n.x;
-				fo.color.g = n.y;
-				fo.color.b = n.z;
-				fo.color.a = 1;
-				*/
 
 				if (r <= 0.000001f || r >= 0.999999f) continue;
 
-				// test 2
+				// test 2 (s, t, and s+t should be between 0 and 1)
 				float3 p = (light - fi.position.xyz) * r + fi.position.xyz;
 				float3 w = p - v0;
 				float3 u = v1 - v0;
@@ -104,7 +118,8 @@ FragmentOutput FragmentMain(
 		}
 	}
 	
-	fo.color.rgb = fi.color * count / numLight / numLight;
+	// define the color according to the visibility
+	fo.color.rgb = fo.color.rgb * count / numLight / numLight;
 	fo.color.a = 1;
 
 	return fo;

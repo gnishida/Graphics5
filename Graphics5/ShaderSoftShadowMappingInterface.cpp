@@ -21,6 +21,11 @@ bool ShaderSoftShadowMappingInterface::InitProgram() {
 	fragmentLightStep = cgGetNamedParameter(fragmentProgram, "lightStep");
 	fragmentNumLight = cgGetNamedParameter(fragmentProgram, "numLight");
 
+	fragmentEyePosition = cgGetNamedParameter(fragmentProgram, "eyePosition");
+	fragmentKa = cgGetNamedParameter(fragmentProgram, "Ka");
+	fragmentKd = cgGetNamedParameter(fragmentProgram, "Kd");
+	fragmentKs = cgGetNamedParameter(fragmentProgram, "Ks");
+
 	return true;
 }
 
@@ -51,6 +56,11 @@ void ShaderSoftShadowMappingInterface::PerFrameInit() {
 	cgGLSetParameter3fv(fragmentLightOrig, (float*)&scene->light->position);
 	cgGLSetParameter1f(fragmentLightStep, 1.0f);
 	cgGLSetParameter1f(fragmentNumLight, 1.0f);
+
+	cgGLSetParameter3fv(fragmentEyePosition, (float*) &(scene->currentPPC->C));
+	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
+	cgGLSetParameter3fv(fragmentKd, (float*) &(scene->light->diffuse));
+	cgGLSetParameter3fv(fragmentKs, (float*) &(scene->light->specular));
 
 	//cgCompileProgram(fragmentProgram);
 }

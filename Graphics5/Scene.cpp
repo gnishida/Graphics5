@@ -80,12 +80,10 @@ void Scene::Demo() {
 	}
 
 	// release the memory
-	/*
 	for (int i = 0; i < meshes.size(); i++) {
 		delete meshes[i];
 	}
 	meshes.clear();
-	*/
 }
 
 /**

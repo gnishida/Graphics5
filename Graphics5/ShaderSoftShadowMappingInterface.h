@@ -13,6 +13,11 @@ private:
 	CGparameter fragmentLightStep;
 	CGparameter fragmentNumLight;
 
+	CGparameter fragmentEyePosition;
+	CGparameter fragmentKa;
+	CGparameter fragmentKd;
+	CGparameter fragmentKs;
+
 public:
 	ShaderSoftShadowMappingInterface();
 
