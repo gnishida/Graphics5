@@ -90,19 +90,15 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PPC.cpp" />
     <ClCompile Include="ProjectiveTexture.cpp" />
-    <ClCompile Include="Projector.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderInterface.cpp" />
     <ClCompile Include="ShaderPhongShadingInterface.cpp" />
     <ClCompile Include="ShaderProjectiveTextureInterface.cpp" />
     <ClCompile Include="ShaderProjectorInterface.cpp" />
-    <ClCompile Include="ShaderShadowMappingInterface.cpp" />
     <ClCompile Include="ShaderSoftShadowMappingInterface.cpp" />
     <ClCompile Include="ShaderStencilTextureInterface.cpp" />
     <ClCompile Include="ShaderTextureInterface.cpp" />
-    <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="SoftShadowMap.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TIFFImage.cpp" />
@@ -123,19 +119,15 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="PPC.h" />
     <ClInclude Include="ProjectiveTexture.h" />
-    <ClInclude Include="Projector.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderInterface.h" />
     <ClInclude Include="ShaderPhongShadingInterface.h" />
     <ClInclude Include="ShaderProjectiveTextureInterface.h" />
     <ClInclude Include="ShaderProjectorInterface.h" />
-    <ClInclude Include="ShaderShadowMappingInterface.h" />
     <ClInclude Include="ShaderSoftShadowMappingInterface.h" />
     <ClInclude Include="ShaderStencilTextureInterface.h" />
     <ClInclude Include="ShaderTextureInterface.h" />
-    <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="SoftShadowMap.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TIFFImage.h" />
@@ -147,7 +139,6 @@
   <ItemGroup>
     <None Include="CG\shaderPhongShading.cg" />
     <None Include="CG\shaderProjectiveTexture.cg" />
-    <None Include="CG\shaderShadowMapping.cg" />
     <None Include="CG\shaderSoftShadowMapping.cg" />
     <None Include="CG\shaderStencilTexture.cg" />
     <None Include="CG\shaderTexture.cg" />

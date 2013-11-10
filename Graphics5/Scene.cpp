@@ -8,8 +8,6 @@
 #include "Light.h"
 #include "FrameBuffer.h"
 #include "ProjectiveTexture.h"
-#include "ShadowMap.h"
-#include "SoftShadowMap.h"
 #include <time.h>
 #include <float.h>
 #include <iostream>
@@ -111,8 +109,6 @@ void Scene::ProjectorDemo() {
 	mesh->Load("geometry/teapot1K.bin");
 	mesh->SetTexture("texture/stencil.tif");
 	//mesh->SetProjectiveTexture(new ProjectiveTexture(ppc2, new Texture("texture/web.tif")));
-	//mesh->SetShadowMap(new ShadowMap(ppc2, w, h));
-	//mesh->SetSoftShadowMap(ssm);
 	mesh->Translate(mesh->GetCentroid() * -1.0f);
 	//meshes.push_back(mesh);
 
@@ -125,8 +121,6 @@ void Scene::ProjectorDemo() {
 	mesh2->Translate(V3(0.0f, -26.0f, 0.0f));
 	mesh2->SetTexture("texture/stencil.tif");
 	//mesh->SetProjectiveTexture(new ProjectiveTexture(ppc2, new Texture("texture/web.tif")));
-	//mesh->SetShadowMap(new ShadowMap(ppc2, w, h));
-	//mesh->SetSoftShadowMap(ssm);
 	meshes.push_back(mesh2);
 
 

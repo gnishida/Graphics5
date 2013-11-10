@@ -16,8 +16,6 @@ TMesh::TMesh() {
 
 	texture = NULL;
 	projTexture = NULL;
-	shadowMap = NULL;
-	softShadowMap = NULL;
 }
 
 TMesh::~TMesh() {
@@ -208,49 +206,6 @@ void TMesh::SetTexture(const char* filename) {
 
 void TMesh::SetProjectiveTexture(ProjectiveTexture* projTexture) {
 	this->projTexture = projTexture;
-}
-
-void TMesh::SetShadowMap(ShadowMap* shadowMap) {
-	this->shadowMap = shadowMap;
-}
-
-void TMesh::SetSoftShadowMap(SoftShadowMap* softShadowMap) {
-	this->softShadowMap = softShadowMap;
-}
-
-bool TMesh::RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist) {
-	float dydx = dir.y() / dir.x();
-	float dzdx = dir.z() / dir.x();
-
-	for (int i = 0; i < trisN; i++) {
-		Vertex p0 = verts[tris[i * 3]];
-		Vertex p1 = verts[tris[i * 3 + 1]];
-		Vertex p2 = verts[tris[i * 3 + 2]];
-
-		float a = -dydx * p0.v.x() + dydx * p1.v.x() + p0.v.y() - p1.v.y();
-		float b = dydx * p2.v.x() - dydx * p0.v.x() + p0.v.y() - p2.v.y();
-		float c = -p.y() - dydx * p0.v.x() + dydx * p.x() + p0.v.y();
-		float d = -dzdx * p0.v.x() + dzdx * p1.v.x() + p0.v.z() - p1.v.z();
-		float e = -dzdx * p0.v.x() + dzdx * p2.v.x() + p0.v.z() - p2.v.z();
-		float f = -p.z() - dzdx * p0.v.x() + dzdx * p.x() + p0.v.z();
-
-		float s = (c * e - b * f) / (a * e - b * d);
-		float t = (c * d - a * f) / (b * d - a * e);
-		if (s < 0 || s > 1 || t < 0 || t > 1 || s + t > 1) continue;
-
-		dist = ((1.0f - s - t) * p0.v.x() + p1.v.x() * s + p2.v.x() * t - p.x()) / dir.x();
-		if (dist <= 0.01f) continue;
-
-		if (texture != NULL) {
-			//col = FrameBuffer::GetColorFromTexture(ppc, p, p0, p1, p2, texture, s, t);
-			return true;
-		} else {
-			//col = FrameBuffer::GetColor(ppc, p, p0, p1, p2, s, t);
-			return true;
-		}
-	}
-
-	return false;
 }
 
 void TMesh::Render(FrameBuffer *fb, PPC *ppc) {

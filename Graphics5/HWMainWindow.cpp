@@ -4,7 +4,6 @@
 #include "ShaderPhongShadingInterface.h"
 #include "ShaderProjectorInterface.h"
 #include "ShaderProjectiveTextureInterface.h"
-#include "ShaderShadowMappingInterface.h"
 #include "ShaderSoftShadowMappingInterface.h"
 #include "ShaderStencilTextureInterface.h"
 
@@ -26,7 +25,6 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 		//si = new ShaderTextureInterface();
 		//si = new ShaderPhongShadingInterface();
 		//si = new ShaderProjectiveTextureInterface();
-		//si = new ShaderShadowMappingInterface();
 		si = new ShaderSoftShadowMappingInterface();
 		//si = new ShaderStencilTextureInterface();
 		si->InitProfiles();
@@ -44,10 +42,7 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	ppc->SetViewGL(zNear, zFar);
 
 	for (int i = 0; i < meshes->size(); i++) {
-		if (meshes->at(i)->softShadowMap != NULL) {
-		} else if (meshes->at(i)->shadowMap != NULL) {
-			((ShaderShadowMappingInterface*)si)->SetShadowMap(meshes->at(i)->shadowMap, meshes);
-		} else if (meshes->at(i)->projTexture != NULL) {
+		if (meshes->at(i)->projTexture != NULL) {
 			((ShaderProjectiveTextureInterface*)si)->SetProjTexture(meshes->at(i)->projTexture);
 		} else if (meshes->at(i)->texture != NULL) {
 			((ShaderTextureInterface*)si)->SetTexture(meshes->at(i)->texture);

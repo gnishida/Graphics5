@@ -4,8 +4,6 @@
 #include "PPC.h"
 #include "Texture.h"
 #include "ProjectiveTexture.h"
-#include "ShadowMap.h"
-#include "SoftShadowMap.h"
 
 class FrameBuffer;
 
@@ -33,8 +31,6 @@ public:
 
 	Texture* texture;
 	ProjectiveTexture* projTexture;
-	ShadowMap* shadowMap;
-	SoftShadowMap* softShadowMap;
 
 public:
 	TMesh();
@@ -55,10 +51,6 @@ public:
 	bool isInside2D(const V3 &p0, const V3 &p1, const V3 &p2, const V3 p) const;
 	void SetTexture(const char* filename);
 	void SetProjectiveTexture(ProjectiveTexture* projTexture);
-	void SetShadowMap(ShadowMap* shadowMap);
-	void SetSoftShadowMap(SoftShadowMap* softShadowMap);
-
-	bool RayTrace(PPC* ppc, const V3 &p, const V3 &dir, V3 &col, float &dist);
 
 	void Render(FrameBuffer *fb, PPC *ppc);
 	void RenderHW();

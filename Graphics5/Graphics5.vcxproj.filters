@@ -39,9 +39,6 @@
     <ClCompile Include="PPC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Projector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,19 +84,10 @@
     <ClCompile Include="M44.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderShadowMappingInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderProjectorInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProjectiveTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadowMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SoftShadowMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderSoftShadowMappingInterface.cpp">
@@ -129,9 +117,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Projector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PPC.h">
@@ -179,19 +164,10 @@
     <ClInclude Include="M44.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderShadowMappingInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderProjectorInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProjectiveTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadowMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SoftShadowMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderSoftShadowMappingInterface.h">
@@ -209,9 +185,6 @@
       <Filter>CG</Filter>
     </None>
     <None Include="CG\shaderTexture.cg">
-      <Filter>CG</Filter>
-    </None>
-    <None Include="CG\shaderShadowMapping.cg">
       <Filter>CG</Filter>
     </None>
     <None Include="CG\shaderPhongShading.cg">
