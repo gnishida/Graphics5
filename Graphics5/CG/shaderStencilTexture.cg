@@ -21,10 +21,10 @@ struct FragmentInput {
 	float4 color	: COLOR;
 };
 
-struct FragmentOutput {
+/*struct FragmentOutput {
 	float4 color	: COLOR;
 	float depth		: DEPTH;
-};
+};*/
 
 
 VertexOutput VertexMain(
@@ -40,25 +40,27 @@ VertexOutput VertexMain(
 	return vo;
 }
 
-FragmentOutput FragmentMain(
+void FragmentMain(
 				FragmentInput fi,
+				out float4 color : COLOR,
+				out float depth : DEPTH,
 				uniform float useTex,
 				uniform sampler2D tex : TEX0) {
-	FragmentOutput fo;
+	//FragmentOutput fo;
 
 	if (useTex == 1.0f) {
-		float4 color = tex2D(tex, fi.texCoord);
+		float4 c = tex2D(tex, fi.texCoord);
 
-		if (color.r == 0 && color.g == 0 && color.b == 0) {
-			fo.color = fi.color;
+		if (c.r == 0 && c.g == 0 && c.b == 0) {
+			color = fi.color;
 		} else {
-			fo.color.a = 0;
-			//fo.depth = 0.1f;
+			color.a = 0;
+			depth = 1.0f;
 		}
 	} else {
-		fo.color = fi.color;
+		color = fi.color;
 	}
 
-	return fo;
+	//return fo;
 }
 

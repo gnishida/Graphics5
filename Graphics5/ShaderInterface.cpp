@@ -12,7 +12,8 @@ ShaderInterface::ShaderInterface(bool useGeometryShader) {
 void ShaderInterface::InitProfiles() {
 	glEnable(GL_DEPTH_TEST);
 
-	if (useGeometryShader) {
+	//if (useGeometryShader) {
+	if (true) {
 		CGprofile latestGeometryProfile = cgGLGetLatestProfile(CG_GL_GEOMETRY);
 
 		if (latestGeometryProfile == CG_PROFILE_UNKNOWN) {
@@ -65,7 +66,7 @@ void ShaderInterface::BindPrograms() {
 	cgGLBindProgram(vertexProgram);
 	cgGLBindProgram(fragmentProgram);
 
-	cgSetParameterSettingMode(cgContext, CG_IMMEDIATE_PARAMETER_SETTING);
+	//cgSetParameterSettingMode(cgContext, CG_IMMEDIATE_PARAMETER_SETTING);
 }
 
 void ShaderInterface::PerFrameDisable() {
