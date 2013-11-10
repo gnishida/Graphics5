@@ -46,13 +46,17 @@ FragmentOutput FragmentMain(
 				uniform sampler2D tex : TEX0) {
 	FragmentOutput fo;
 
-	float4 color = tex2D(tex, fi.texCoord);
+	if (useTex == 1.0f) {
+		float4 color = tex2D(tex, fi.texCoord);
 
-	if (color.r == 0 && color.g == 0 && color.b == 0) {
-		fo.color = fi.color;
+		if (color.r == 0 && color.g == 0 && color.b == 0) {
+			fo.color = fi.color;
+		} else {
+			fo.color = 0;
+			//fo.depth = 0.9999999;
+		}
 	} else {
-		fo.color = 0;
-		fo.depth = 0.9999999;
+		fo.color = fi.color;
 	}
 
 	return fo;

@@ -18,7 +18,6 @@ public:
 
 public:
 	Texture();
-	Texture(FrameBuffer* fb);
 	Texture(const char* filename);
 	~Texture();
 

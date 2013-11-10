@@ -10,6 +10,7 @@ bool ShaderStencilTextureInterface::InitProgram() {
 
 	// build some parameters by name such that we can set them later...
 	vertexModelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
+	fragmentUseTex = cgGetNamedParameter(fragmentProgram, "useTex");
 	fragmentTex = cgGetNamedParameter(fragmentProgram, "tex");
 
 	return true;
@@ -23,9 +24,9 @@ void ShaderStencilTextureInterface::PerFrameInit() {
 	if (mesh->texture != NULL) {
 		GLuint texture_id = mesh->texture->Bind();
 		cgGLSetTextureParameter(fragmentTex, texture_id);
-		cgGLSetTextureParameter(fragmentUseTex, 1);
+		cgGLSetParameter1f(fragmentUseTex, 1.0f);
 	} else {
-		cgGLSetTextureParameter(fragmentUseTex, 0);
+		cgGLSetParameter1f(fragmentUseTex, 0.0f);
 	}
 }
 

@@ -13,20 +13,6 @@ Texture::Texture() {
 	binded = false;
 }
 
-Texture::Texture(FrameBuffer* fb) {
-	this->width = fb->w;
-	this->height = fb->h;
-
-	image = new unsigned int[width * height];
-	for (int v = 0; v < height; v++) {
-		for (int u = 0; u < width; u++) {
-			image[v * width + u] = fb->pix[v * width + u];
-		}
-	}
-
-	binded = false;
-}
-
 Texture::Texture(const char* filename) {
 	TIFF* tiff = TIFFOpen(filename, "r");
 	if (tiff == NULL) throw "File is not accessible.";

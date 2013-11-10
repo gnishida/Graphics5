@@ -85,10 +85,12 @@ void Scene::Demo() {
 	}
 
 	// release the memory
+	/*
 	for (int i = 0; i < meshes.size(); i++) {
 		delete meshes[i];
 	}
 	meshes.clear();
+	*/
 }
 
 /**
@@ -108,6 +110,7 @@ void Scene::ProjectorDemo() {
 	mesh->SetTexture("texture/stencil.tif");
 	meshes.push_back(mesh);
 
+	/*
 	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	mesh->SetTexture("texture/stencil.tif");
 	meshes.push_back(mesh);
@@ -115,6 +118,7 @@ void Scene::ProjectorDemo() {
 	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	mesh->SetTexture("texture/stencil.tif");
 	meshes.push_back(mesh);
+	*/
 
 	mesh = new Quad(100, 100, V3(0.0f, 1.0f, 1.0f));
 	mesh->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
@@ -137,10 +141,12 @@ void Scene::ProjectorDemo() {
 	}
 
 	// release the memory
+	/*
 	for (int i = 0; i < meshes.size(); i++) {
 		delete meshes[i];
 	}
 	meshes.clear();
+	*/
 }
 
 /**
