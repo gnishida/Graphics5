@@ -20,7 +20,7 @@ using namespace std;
 #define HIGH_RES		1
 
 Scene *scene;
-Light* Scene::light = new Light(V3(200.0f, 20.0f, 200.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
+Light* Scene::light = new Light(V3(200.0f, 100.0f, 200.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
 
 Scene::Scene() {
 	mipmap_mode = true;
@@ -45,7 +45,7 @@ Scene::Scene() {
 	
 	// create a camera
 	PPC* ppc = new PPC(60.0f, win->frame->w, win->frame->h);
-	ppc->LookAt(V3(0.0f, 10.0f, 0.0f), V3(0.0f, 0.0f, -1.0f), V3(0.0f, 1.0f, 0.0f), 150.0f);
+	ppc->LookAt(V3(0.0f, 0.0f, 0.0f), V3(0.0f, -1.0f, -1.0f), V3(0.0f, 1.0f, -1.0f), 150.0f);
 	ppcs.push_back(ppc);
 
 	currentPPC = ppcs[0];
@@ -59,22 +59,24 @@ Scene::Scene() {
  */
 void Scene::Demo() {
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -20.0f), V3(-20.0f, 20.0f, 0.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	/*
-	mesh = new Box(V3(20.0f, 0.0f, -20.0f), V3(40.0f, 20.0f, 00.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, 20.0f), V3(10.0f, 20.0f, 40.0f), V3(0.0f, 0.0f, 1.0f));
+	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
-	*/
 
 	mesh = new Quad(100, 100, V3(0.0f, 1.0f, 1.0f));
 	mesh->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	meshes.push_back(mesh);
 
 	for (int i = 0; i < 1000; i++) {
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+
 		Render();
 		Fl::wait();
 	}

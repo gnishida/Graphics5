@@ -42,8 +42,8 @@ VertexOutput VertexMain(
 
 FragmentOutput FragmentMain(
 				FragmentInput fi,
-				uniform float box1Tris[36],
-				uniform float3 box1Verts[24],
+				uniform float meshTris[36 * 3],
+				uniform float3 meshVerts[24 * 3],
 				uniform float3 lightOrig,
 				uniform float lightStep,
 				uniform float numLight) {
@@ -57,14 +57,13 @@ FragmentOutput FragmentMain(
 			light.y += v * lightStep;
 
 			int intersected = 0;
-			//for (int i = 0; i < 12; i++) {
-			for (int i = 0; i < 12; i++) {
-				int tris0 = (int)box1Tris[i * 3];
-				int tris1 = (int)box1Tris[i * 3 + 1];
-				int tris2 = (int)box1Tris[i * 3 + 2];
-				float3 v0 = box1Verts[tris0];
-				float3 v1 = box1Verts[tris1];
-				float3 v2 = box1Verts[tris2];
+			for (int i = 0; i < 12 * 3; i++) {
+				int tris0 = (int)meshTris[i * 3];
+				int tris1 = (int)meshTris[i * 3 + 1];
+				int tris2 = (int)meshTris[i * 3 + 2];
+				float3 v0 = meshVerts[tris0];
+				float3 v1 = meshVerts[tris1];
+				float3 v2 = meshVerts[tris2];
 
 				float3 n = normalize(cross(v1 - v0, v2 - v0));
 
@@ -73,14 +72,7 @@ FragmentOutput FragmentMain(
 				if (denom == 0.0f) continue;
 				float numer = dot(n, v0 - fi.position.xyz);
 				float r = numer / denom;
-
-				/*
-				fo.color.r = light.x / 400;
-				fo.color.g = light.y / 40;
-				fo.color.b = light.z / 400;
-				fo.color.a = 1;
-				*/
-				
+			
 				/*
 				fo.color.r = n.x;
 				fo.color.g = n.y;
@@ -111,19 +103,9 @@ FragmentOutput FragmentMain(
 			}
 		}
 	}
-
-
-
-	//fo.color = fi.color;
 	
 	fo.color.rgb = fi.color * count / numLight / numLight;
 	fo.color.a = 1;
-	/*
-	fo.color.r = box1Verts[7].x / 40.0f + 1.0f;
-	fo.color.g = box1Verts[7].y / 40.0f + 1.0f;
-	fo.color.b = box1Verts[7].z / 40.0f + 1.0f;
-	fo.color.a = 1;
-	*/
 
 	return fo;
 }
