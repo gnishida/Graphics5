@@ -1,0 +1,135 @@
+/**
+ * This shader implements shadow mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float3 normal	: NORMAL;
+	float2 texCoord	: TEXCOORD0;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float2 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float2 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = vi.texCoord;
+	vo.objectPos = vi.position;
+	vo.color = vi.color;
+	vo.normal = vi.normal;
+
+	return vo;
+}
+
+void FragmentMain(
+				FragmentInput fi,
+				out float4 color : COLOR,
+				out float depth : DEPTH,
+				uniform float meshTris[36 * 3],
+				uniform float3 meshVerts[24 * 3],
+				uniform float3 lightOrig,
+				uniform float lightStep,
+				uniform float numLight,
+				uniform float3 eyePosition,
+				uniform float Ka,
+				uniform float Kd,
+				uniform float Ks,
+				uniform float useTex,
+				uniform sampler2D tex : TEX0) {
+	// Compute the visibility to the light sources
+	float count = 0.0f;
+	for (int v = 0; v < numLight; v++) {
+		for (int u = 0; u < numLight; u++) {
+			float3 light = lightOrig;
+			light.x += u * lightStep;
+			light.y += v * lightStep;
+
+			// Check the intersection with each triangle
+			int intersected = 0;
+			for (int i = 0; i < 12 * 3; i++) {
+				int tris0 = (int)meshTris[i * 3];
+				int tris1 = (int)meshTris[i * 3 + 1];
+				int tris2 = (int)meshTris[i * 3 + 2];
+				float3 v0 = meshVerts[tris0];
+				float3 v1 = meshVerts[tris1];
+				float3 v2 = meshVerts[tris2];
+
+				float3 n = normalize(cross(v1 - v0, v2 - v0));
+
+				// test 1 (r should be between 0 and 1)
+				float denom = dot(n, light - fi.position.xyz);
+				if (denom == 0.0f) continue;
+				float numer = dot(n, v0 - fi.position.xyz);
+				float r = numer / denom;
+
+				if (r <= 0.000001f || r >= 0.999999f) continue;
+
+				// test 2 (s, t, and s+t should be between 0 and 1)
+				float3 p = (light - fi.position.xyz) * r + fi.position.xyz;
+				float3 w = p - v0;
+				float3 u = v1 - v0;
+				float3 v = v2 - v0;
+
+				float uu = dot(v1 - v0, v1 - v0);
+				float vv = dot(v2 - v0, v2 - v0);
+				float uv = dot(v1 - v0, v2 - v0);
+				float wu = dot(p - v0, v1 - v0);
+				float wv = dot(p - v0, v2 - v0);
+
+				denom = uv * uv - uu * vv;
+				float s = (uv * wv - vv * wu) / denom;
+				float t = (uv * wu - uu * wv) / denom;
+				if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) continue;
+
+				// intersect!!!
+				intersected = 1;
+				break;
+			}
+
+			if (intersected == 0) {
+				count++;
+			}
+		}
+	}
+
+	// Phong shading
+	float3 L = normalize(lightOrig - fi.position.xyz);
+
+	float ambient = Ka;
+	float diffuse = max(dot(L, fi.normal), 0) * count / numLight / numLight;
+
+	float3 V = normalize(eyePosition - fi.position.xyz);
+	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks) * count / numLight / numLight;
+	
+	color.rgb = fi.color.rgb * (ambient + diffuse + specular);
+	color.a = 1;
+
+	// Stencil texture
+	if (useTex == 1.0f) {
+		float4 c = tex2D(tex, fi.texCoord);
+
+		if (c.r == 1.0f && c.g == 1.0f && c.b == 1.0f) {
+			color.a = 0;
+			//depth = 1.0f;
+		}
+	}
+}
+
+				

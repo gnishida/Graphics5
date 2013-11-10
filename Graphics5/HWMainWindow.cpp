@@ -1,11 +1,6 @@
 #include "HWMainWindow.h"
 #include "Scene.h"
-#include "ShaderTextureInterface.h"
-#include "ShaderPhongShadingInterface.h"
-#include "ShaderProjectorInterface.h"
-#include "ShaderProjectiveTextureInterface.h"
-#include "ShaderSoftShadowMappingInterface.h"
-#include "ShaderStencilTextureInterface.h"
+#include "ShaderStencilTextureWithSoftShadowMappingInterface.h"
 
 HWMainWindow::HWMainWindow(int u0, int v0, int _w, int _h) : MainWindow(u0, v0, _w, _h) {
 	si = NULL;
@@ -22,11 +17,7 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (!si) {
-		//si = new ShaderTextureInterface();
-		//si = new ShaderPhongShadingInterface();
-		//si = new ShaderProjectiveTextureInterface();
-		//si = new ShaderSoftShadowMappingInterface();
-		si = new ShaderStencilTextureInterface();
+		si = new ShaderStencilTextureWithSoftShadowMappingInterface();
 		si->InitProfiles();
 		si->InitProgram();
 	}
