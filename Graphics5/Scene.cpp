@@ -57,13 +57,13 @@ Scene::Scene() {
  */
 void Scene::Demo() {
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 30.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
+	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 10.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Quad(100, 100, V3(0.0f, 1.0f, 1.0f));
@@ -76,23 +76,19 @@ void Scene::Demo() {
 		
 		//light->position[0] += (i % 200 < 100) ? 1.0f : -1.0f;
 
-		/*
 		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
 		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
 		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		*/
 
 		Render();
 		Fl::wait();
 	}
 
 	// release the memory
-	/*
 	for (int i = 0; i < meshes.size(); i++) {
 		delete meshes[i];
 	}
 	meshes.clear();
-	*/
 }
 
 /**
