@@ -6,16 +6,23 @@
 class ShaderSoftShadowMappingInterface : public ShaderInterface {
 private:
 	CGparameter vertexModelViewProj;
-	CGparameter fragmentShadowMap;
+	CGparameter fragmentBox1Tris;
+	CGparameter fragmentBox1Verts;
 
-	SoftShadowMap* softShadowMap;
+	CGparameter fragmentBox2Tris;
+	CGparameter fragmentBox2Verts;
+
+	CGparameter fragmentBox3Tris;
+	CGparameter fragmentBox3Verts;
+
+	CGparameter fragmentLightOrig;
+	CGparameter fragmentLightStep;
+	CGparameter fragmentNumLight;
 
 public:
 	ShaderSoftShadowMappingInterface();
 
 	bool InitProgram();
 	void PerFrameInit();
-
-	void SetSoftShadowMap(SoftShadowMap* softShadowMap);
 };
 

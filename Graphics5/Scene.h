@@ -36,6 +36,8 @@ public:
 
 	static Light* light;
 
+	V3 pos[3];
+
 	bool mipmap_mode;
 
 public:
@@ -45,9 +47,8 @@ public:
 	void ProjectorDemo();
 	void SaveProjector();
 	void Render();
-	void RenderProjectiveTextureMapping(FrameBuffer* fb, PPC* ppc);
-	void RenderShadowMapping(FrameBuffer* fb, PPC* ppc);
-	V3 RayTrace(PPC* ppc, const V3 &p, const V3 &dir, float &dist);
+
+	void CreateScene1();
 };
 
 extern Scene *scene;

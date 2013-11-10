@@ -27,8 +27,8 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 		//si = new ShaderPhongShadingInterface();
 		//si = new ShaderProjectiveTextureInterface();
 		//si = new ShaderShadowMappingInterface();
-		//si = new ShaderSoftShadowMappingInterface();
-		si = new ShaderStencilTextureInterface();
+		si = new ShaderSoftShadowMappingInterface();
+		//si = new ShaderStencilTextureInterface();
 		si->InitProfiles();
 		si->InitProgram();
 	}
@@ -45,7 +45,6 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 
 	for (int i = 0; i < meshes->size(); i++) {
 		if (meshes->at(i)->softShadowMap != NULL) {
-			((ShaderSoftShadowMappingInterface*)si)->SetSoftShadowMap(meshes->at(i)->softShadowMap);
 		} else if (meshes->at(i)->shadowMap != NULL) {
 			((ShaderShadowMappingInterface*)si)->SetShadowMap(meshes->at(i)->shadowMap, meshes);
 		} else if (meshes->at(i)->projTexture != NULL) {

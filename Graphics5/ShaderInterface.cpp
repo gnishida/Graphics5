@@ -64,6 +64,8 @@ void ShaderInterface::BindPrograms() {
 	}
 	cgGLBindProgram(vertexProgram);
 	cgGLBindProgram(fragmentProgram);
+
+	cgSetParameterSettingMode(cgContext, CG_IMMEDIATE_PARAMETER_SETTING);
 }
 
 void ShaderInterface::PerFrameDisable() {
