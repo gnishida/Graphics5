@@ -18,8 +18,8 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (!si) {
-		si = new ShaderStencilTextureInterface();
-		//si = new ShaderStencilTextureWithSoftShadowMappingInterface();
+		//si = new ShaderStencilTextureInterface();
+		si = new ShaderStencilTextureWithSoftShadowMappingInterface();
 		si->InitProfiles();
 		si->InitProgram();
 	}

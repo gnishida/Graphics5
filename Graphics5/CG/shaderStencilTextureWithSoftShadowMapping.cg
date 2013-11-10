@@ -52,7 +52,8 @@ void FragmentMain(
 				uniform float Kd,
 				uniform float Ks,
 				uniform float useTex,
-				uniform sampler2D tex : TEX0) {
+				uniform sampler2D tex : TEX0,
+				uniform float4x4 modelViewProj) {
 	// Compute the visibility to the light sources
 	float count = 0.0f;
 	for (int v = 0; v < numLight; v++) {
@@ -121,14 +122,20 @@ void FragmentMain(
 	color.rgb = fi.color.rgb * (ambient + diffuse + specular);
 	color.a = 1;
 
+	float4 proj = mul(modelViewProj, fi.position);
+
 	// Stencil texture
 	if (useTex == 1.0f) {
 		float4 c = tex2D(tex, fi.texCoord);
 
 		if (c.r == 1.0f && c.g == 1.0f && c.b == 1.0f) {
 			color.a = 0;
-			//depth = 1.0f;
+			depth = 1.0f;
+		} else {
+			depth = proj.z * 0.005;
 		}
+	} else {
+		depth = proj.z * 0.005;
 	}
 }
 

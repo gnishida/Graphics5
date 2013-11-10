@@ -20,6 +20,8 @@ private:
 	CGparameter fragmentUseTex;
 	CGparameter fragmentTex;
 
+	CGparameter fragmentModelViewProj;
+
 public:
 	ShaderStencilTextureWithSoftShadowMappingInterface();
 

@@ -29,6 +29,8 @@ bool ShaderStencilTextureWithSoftShadowMappingInterface::InitProgram() {
 	fragmentUseTex = cgGetNamedParameter(fragmentProgram, "useTex");
 	fragmentTex = cgGetNamedParameter(fragmentProgram, "tex");
 
+	fragmentModelViewProj = cgGetNamedParameter(fragmentProgram, "modelViewProj");
+
 	return true;
 }
 
@@ -73,6 +75,8 @@ void ShaderStencilTextureWithSoftShadowMappingInterface::PerFrameInit() {
 	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
 	cgGLSetParameter3fv(fragmentKd, (float*) &(scene->light->diffuse));
 	cgGLSetParameter3fv(fragmentKs, (float*) &(scene->light->specular));
+
+	cgGLSetStateMatrixParameter(fragmentModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 
 	//cgCompileProgram(fragmentProgram);
 }
