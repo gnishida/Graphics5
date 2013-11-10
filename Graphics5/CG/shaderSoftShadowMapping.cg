@@ -90,9 +90,15 @@ FragmentOutput FragmentMain(
 				float3 u = v1 - v0;
 				float3 v = v2 - v0;
 
-				denom = dot(u, v) * dot(u, v) - dot(u, u) * dot(v, v);
-				float s = (dot(u, v) * dot(w, v) - dot(v, v) * dot(w, u)) / denom;
-				float t = (dot(u, v) * dot(w, u) - dot(u, u) * dot(w, v)) / denom;
+				float uu = dot(v1 - v0, v1 - v0);
+				float vv = dot(v2 - v0, v2 - v0);
+				float uv = dot(v1 - v0, v2 - v0);
+				float wu = dot(p - v0, v1 - v0);
+				float wv = dot(p - v0, v2 - v0);
+
+				denom = uv * uv - uu * vv;
+				float s = (uv * wv - vv * wu) / denom;
+				float t = (uv * wu - uu * wv) / denom;
 				if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) continue;
 
 				// intersect!!!
@@ -113,7 +119,7 @@ FragmentOutput FragmentMain(
 	float diffuse = max(dot(L, fi.normal), 0) * count / numLight / numLight;
 
 	float3 V = normalize(eyePosition - fi.position);
-	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks);
+	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks) * count / numLight / numLight;
 	
 	fo.color.rgb = fi.color.rgb * (ambient + diffuse + specular);
 	fo.color.a = 1;

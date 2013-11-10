@@ -106,10 +106,10 @@ void Scene::Save() {
  */
 void Scene::ProjectorDemo() {
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-40.0f, 40.0f, -10.0f), V3(-20.0f, 60.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	mesh->SetTexture("texture/stencil.tif");
 	meshes.push_back(mesh);
-
+	
 	/*
 	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	mesh->SetTexture("texture/stencil.tif");

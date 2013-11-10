@@ -52,8 +52,8 @@ FragmentOutput FragmentMain(
 		if (color.r == 0 && color.g == 0 && color.b == 0) {
 			fo.color = fi.color;
 		} else {
-			fo.color = 0;
-			//fo.depth = 0.9999999;
+			fo.color.a = 0;
+			//fo.depth = 0.1f;
 		}
 	} else {
 		fo.color = fi.color;
