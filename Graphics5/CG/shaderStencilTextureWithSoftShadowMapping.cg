@@ -106,7 +106,7 @@ void FragmentMain(
 				float2 texCoord2 = meshTexCoords[tris2];
 				float2 texCoord = texCoord0 * (1 - s - t) + texCoord1 * s + texCoord2 * t;
 				float4 c = tex2D(tex, texCoord);
-				if (c.r == 1 || c.g == 1 || c.b == 1) continue;
+				if (c.r >= 0.5f) continue;
 
 				// intersect!!!
 				intersected = 1;
@@ -119,14 +119,20 @@ void FragmentMain(
 		}
 	}
 
+	// define the normal according to which face is visible to the eye
+	float3 normal = fi.normal;
+	if (dot(fi.normal, eyePosition - fi.position.xyz) < 0) {
+		normal = normal * -1;
+	}
+
 	// Phong shading
 	float3 L = normalize(lightOrig - fi.position.xyz);
 
 	float ambient = Ka;
-	float diffuse = max(dot(L, fi.normal), 0) * count / numLight / numLight;
+	float diffuse = max(dot(L, normal), 0) * count / numLight / numLight;
 
 	float3 V = normalize(eyePosition - fi.position.xyz);
-	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks) * count / numLight / numLight;
+	float specular = pow(max(dot(normal * dot(V, normal) * 2 - V, L), 0), Ks) * count / numLight / numLight;
 	
 	color.rgb = fi.color.rgb * (ambient + diffuse + specular);
 	color.a = 1;
@@ -137,7 +143,7 @@ void FragmentMain(
 	if (useTex == 1.0f) {
 		float4 c = tex2D(tex, fi.texCoord);
 
-		if (c.r == 1.0f && c.g == 1.0f && c.b == 1.0f) {
+		if (c.r >= 0.5f) {
 			color.a = 0;
 			depth = 1.0f;
 		} else {
