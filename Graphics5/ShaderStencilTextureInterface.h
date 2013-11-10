@@ -6,16 +6,13 @@
 class ShaderStencilTextureInterface : public ShaderInterface {
 private:
 	CGparameter vertexModelViewProj;
+	CGparameter fragmentUseTex;
 	CGparameter fragmentTex;
-
-	Texture* texture;
 
 public:
 	ShaderStencilTextureInterface();
 
 	bool InitProgram();
 	void PerFrameInit();
-
-	void SetTexture(Texture* texture);
 };
 

@@ -19,7 +19,7 @@ bool ShaderProjectiveTextureInterface::InitProgram() {
 
 void ShaderProjectiveTextureInterface::PerFrameInit() {
 	// bind the texture
-	GLuint texture_id = projTexture->texture->Bind();
+	GLuint texture_id = mesh->projTexture->texture->Bind();
 
 	//set parameters
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
@@ -29,14 +29,10 @@ void ShaderProjectiveTextureInterface::PerFrameInit() {
 
 	M44 biasMatrix, lightViewMatrix, projectionMatrix;
 	BuildBiasMatrix(biasMatrix);
-	BuildLightViewMatrix(projTexture->ppc, lightViewMatrix);
-	BuildProjectionMatrix(projTexture->ppc, zNear, zFar, projectionMatrix);
+	BuildLightViewMatrix(mesh->projTexture->ppc, lightViewMatrix);
+	BuildProjectionMatrix(mesh->projTexture->ppc, zNear, zFar, projectionMatrix);
 
 	lightViewMatrix = biasMatrix * projectionMatrix * lightViewMatrix;
 	cgSetMatrixParameterfr(vertexTextureMatrix, (float*)lightViewMatrix.rows);
 	cgGLSetTextureParameter(fragmentProjectiveMap, texture_id);
-}
-
-void ShaderProjectiveTextureInterface::SetProjTexture(ProjectiveTexture* projTexture) {
-	this->projTexture = projTexture;
 }

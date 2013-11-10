@@ -18,13 +18,10 @@ bool ShaderTextureInterface::InitProgram() {
 
 
 void ShaderTextureInterface::PerFrameInit() {
-	GLuint texture_id = texture->Bind();
+	GLuint texture_id = mesh->texture->Bind();
 
 	//set parameters
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
 	cgGLSetTextureParameter(fragmentTex, texture_id);
 }
 
-void ShaderTextureInterface::SetTexture(Texture* texture) {
-	this->texture = texture;
-}

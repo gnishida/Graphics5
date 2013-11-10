@@ -42,6 +42,7 @@ VertexOutput VertexMain(
 
 FragmentOutput FragmentMain(
 				FragmentInput fi,
+				uniform float useTex,
 				uniform sampler2D tex : TEX0) {
 	FragmentOutput fo;
 

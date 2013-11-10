@@ -11,14 +11,10 @@ private:
 	CGparameter vertexTextureMatrix;
 	CGparameter fragmentProjectiveMap;
 
-	ProjectiveTexture* projTexture;
-
 public:
 	ShaderProjectiveTextureInterface();
 
 	bool InitProgram();
 	void PerFrameInit();
-
-	void SetProjTexture(ProjectiveTexture* projTexture);
 };
 

@@ -17,13 +17,15 @@ bool ShaderStencilTextureInterface::InitProgram() {
 
 
 void ShaderStencilTextureInterface::PerFrameInit() {
-	GLuint texture_id = texture->Bind();
-
 	//set parameters
 	cgGLSetStateMatrixParameter(vertexModelViewProj, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
-	cgGLSetTextureParameter(fragmentTex, texture_id);
+
+	if (mesh->texture != NULL) {
+		GLuint texture_id = mesh->texture->Bind();
+		cgGLSetTextureParameter(fragmentTex, texture_id);
+		cgGLSetTextureParameter(fragmentUseTex, 1);
+	} else {
+		cgGLSetTextureParameter(fragmentUseTex, 0);
+	}
 }
 
-void ShaderStencilTextureInterface::SetTexture(Texture* texture) {
-	this->texture = texture;
-}

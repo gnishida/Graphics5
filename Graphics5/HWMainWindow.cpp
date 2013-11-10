@@ -42,12 +42,7 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 	ppc->SetViewGL(zNear, zFar);
 
 	for (int i = 0; i < meshes->size(); i++) {
-		if (meshes->at(i)->projTexture != NULL) {
-			((ShaderProjectiveTextureInterface*)si)->SetProjTexture(meshes->at(i)->projTexture);
-		} else if (meshes->at(i)->texture != NULL) {
-			((ShaderTextureInterface*)si)->SetTexture(meshes->at(i)->texture);
-		}
-
+		si->SetMesh(meshes->at(i));
 		si->PerFrameInit();
 
 		meshes->at(i)->RenderHW();

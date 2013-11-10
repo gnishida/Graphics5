@@ -115,3 +115,7 @@ bool ShaderInterface::loadFragmentProgram(char* filename, char* funcname) {
 
 	return true;
 }
+
+void ShaderInterface::SetMesh(TMesh* mesh) {
+	this->mesh = mesh;
+}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "TMesh.h"
 #include <Cg/cgGL.h>
 #include <Cg/cg.h>
 
@@ -16,6 +17,8 @@ protected:
 	CGprogram vertexProgram;
 	CGprogram fragmentProgram;
 
+	TMesh* mesh;
+
 public:
 	ShaderInterface(bool useGeometryShader = false);
 
@@ -28,6 +31,8 @@ public:
 	bool loadGeometryProgram(char* filename, char* funcname);
 	bool loadVertexProgram(char* filename, char* funcname);
 	bool loadFragmentProgram(char* filename, char* funcname);
+
+	void SetMesh(TMesh* mesh);
 
 	virtual bool InitProgram() = 0;
 	virtual void PerFrameInit() = 0;
