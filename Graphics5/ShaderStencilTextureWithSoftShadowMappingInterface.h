@@ -7,6 +7,8 @@ private:
 	CGparameter vertexModelViewProj;
 	CGparameter fragmentMeshTris;
 	CGparameter fragmentMeshVerts;
+	CGparameter fragmentMeshTexCoords;
+	CGparameter fragmentMeshTex;
 
 	CGparameter fragmentLightOrig;
 	CGparameter fragmentLightStep;

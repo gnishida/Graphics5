@@ -16,6 +16,8 @@ bool ShaderStencilTextureWithSoftShadowMappingInterface::InitProgram() {
 
 	fragmentMeshTris = cgGetNamedParameter(fragmentProgram, "meshTris");
 	fragmentMeshVerts = cgGetNamedParameter(fragmentProgram, "meshVerts");
+	fragmentMeshTexCoords = cgGetNamedParameter(fragmentProgram, "meshTexCoords");
+	fragmentMeshTex = cgGetNamedParameter(fragmentProgram, "meshTex");
 
 	fragmentLightOrig = cgGetNamedParameter(fragmentProgram, "lightOrig");
 	fragmentLightStep = cgGetNamedParameter(fragmentProgram, "lightStep");
@@ -55,17 +57,21 @@ void ShaderStencilTextureWithSoftShadowMappingInterface::PerFrameInit() {
 		}
 	}
 	float verts[24 * 3][3];
+	float texCoords[24 * 3][2];
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 24; j++) {
 			verts[i * 24 + j][0] = (float)scene->meshes[i]->verts[j].v.x();
 			verts[i * 24 + j][1] = (float)scene->meshes[i]->verts[j].v.y();
 			verts[i * 24 + j][2] = (float)scene->meshes[i]->verts[j].v.z();
+			texCoords[i * 24 + j][0] = (float)scene->meshes[i]->verts[j].t[0];
+			texCoords[i * 24 + j][1] = (float)scene->meshes[i]->verts[j].t[1];
 		}
 	}
 
 	// set parameters for the fragment shader
 	cgGLSetParameterArray1f(fragmentMeshTris, 0, 36 * 3, (float*)tris);
 	cgGLSetParameterArray3f(fragmentMeshVerts, 0, 24 * 3, (float*)verts);
+	cgGLSetParameterArray2f(fragmentMeshTexCoords, 0, 24 * 3, (float*)texCoords);
 
 	cgGLSetParameter3fv(fragmentLightOrig, (float*)&scene->light->position);
 	cgGLSetParameter1f(fragmentLightStep, 1.0f);

@@ -44,6 +44,7 @@ void FragmentMain(
 				out float depth : DEPTH,
 				uniform float meshTris[36 * 3],
 				uniform float3 meshVerts[24 * 3],
+				uniform float2 meshTexCoords[24 * 3],
 				uniform float3 lightOrig,
 				uniform float lightStep,
 				uniform float numLight,
@@ -98,6 +99,14 @@ void FragmentMain(
 				float s = (uv * wv - vv * wu) / denom;
 				float t = (uv * wu - uu * wv) / denom;
 				if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) continue;
+
+				// lookup the texture to see if the color is black or white
+				float2 texCoord0 = meshTexCoords[tris0];
+				float2 texCoord1 = meshTexCoords[tris1];
+				float2 texCoord2 = meshTexCoords[tris2];
+				float2 texCoord = texCoord0 * (1 - s - t) + texCoord1 * s + texCoord2 * t;
+				float4 c = tex2D(tex, texCoord);
+				if (c.r == 1 || c.g == 1 || c.b == 1) continue;
 
 				// intersect!!!
 				intersected = 1;
