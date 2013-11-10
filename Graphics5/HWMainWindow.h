@@ -6,8 +6,8 @@
 class HWMainWindow : public MainWindow {
 private:
 	/** for hw rendering */
-	//CGInterface *cgi;
 	ShaderInterface *si;
+	ShaderInterface *si2;
 
 public:
 	HWMainWindow(int u0, int v0, int _w, int _h);
