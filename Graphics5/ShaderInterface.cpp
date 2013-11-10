@@ -12,8 +12,7 @@ ShaderInterface::ShaderInterface(bool useGeometryShader) {
 void ShaderInterface::InitProfiles() {
 	glEnable(GL_DEPTH_TEST);
 
-	//if (useGeometryShader) {
-	if (true) {
+	if (useGeometryShader) {
 		CGprofile latestGeometryProfile = cgGLGetLatestProfile(CG_GL_GEOMETRY);
 
 		if (latestGeometryProfile == CG_PROFILE_UNKNOWN) {

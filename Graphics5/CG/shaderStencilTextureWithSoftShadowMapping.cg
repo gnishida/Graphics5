@@ -45,7 +45,7 @@ void FragmentMain(
 				uniform float meshTris[36 * 3],
 				uniform float3 meshVerts[24 * 3],
 				uniform float2 meshTexCoords[24 * 3],
-				uniform float3 lightOrig,
+				uniform float3 lightCenter,
 				uniform float lightStep,
 				uniform float numLight,
 				uniform float3 eyePosition,
@@ -55,6 +55,10 @@ void FragmentMain(
 				uniform float useTex,
 				uniform sampler2D tex : TEX0,
 				uniform float4x4 modelViewProj) {
+	float3 lightOrig = lightCenter;
+	lightOrig.x -= numLight * 0.5f * lightStep;
+	lightOrig.y -= numLight * 0.5f * lightStep;
+
 	// Compute the visibility to the light sources
 	float count = 0.0f;
 	for (int v = 0; v < numLight; v++) {

@@ -10,7 +10,7 @@ private:
 	CGparameter fragmentMeshTexCoords;
 	CGparameter fragmentMeshTex;
 
-	CGparameter fragmentLightOrig;
+	CGparameter fragmentLightCenter;
 	CGparameter fragmentLightStep;
 	CGparameter fragmentNumLight;
 
