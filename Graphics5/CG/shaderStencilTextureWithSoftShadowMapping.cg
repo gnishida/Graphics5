@@ -24,6 +24,76 @@ struct FragmentInput {
 	float4 color	: COLOR;
 };
 
+
+float4 PhongShading(
+				in float3 position,
+				in float4 origColor,
+				in float3 normal,
+				in float3 light,
+				in float3 eye,
+				in float Ka,
+				in float Kd,
+				in float Ks,
+				in float brightness) {
+	if (dot(normal, eye - position) < 0) {
+		normal = normal * -1;
+	}
+
+	// light direction
+	float3 L = normalize(light - position);
+
+	float ambient = Ka;
+	float diffuse = max(dot(L, normal), 0) * brightness;
+
+	float3 V = normalize(eye - position);
+	float specular = pow(max(dot(normal * dot(V, normal) * 2 - V, L), 0), Ks) * brightness;
+	
+	float4 color;
+	color.rgb = origColor.rgb * (ambient + diffuse + specular);
+	color.a = 1;
+
+	return color;
+}
+
+bool IsIntersectWithTriangle(
+				in float3 position,
+				in float3 light,
+				in float3 v0,
+				in float3 v1,
+				in float3 v2,
+				out float s,
+				out float t) {
+	float3 n = normalize(cross(v1 - v0, v2 - v0));
+
+	// test 1 (r should be between 0 and 1)
+	float denom = dot(n, light - position);
+	if (denom == 0.0f) return false;
+
+	float numer = dot(n, v0 - position);
+	float r = numer / denom;
+
+	if (r <= 0.000001f || r >= 0.999999f) return false;
+
+	// test 2 (s, t, and s+t should be between 0 and 1)
+	float3 p = (light - position) * r + position;
+	float3 w = p - v0;
+	float3 u = v1 - v0;
+	float3 v = v2 - v0;
+
+	float uu = dot(v1 - v0, v1 - v0);
+	float vv = dot(v2 - v0, v2 - v0);
+	float uv = dot(v1 - v0, v2 - v0);
+	float wu = dot(p - v0, v1 - v0);
+	float wv = dot(p - v0, v2 - v0);
+
+	denom = uv * uv - uu * vv;
+	s = (uv * wv - vv * wu) / denom;
+	t = (uv * wu - uu * wv) / denom;
+	if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
+
+	return true;
+}
+
 VertexOutput VertexMain(
 				VertexInput vi,
 				uniform float4x4 modelViewProj) {
@@ -77,32 +147,8 @@ void FragmentMain(
 				float3 v1 = meshVerts[tris1];
 				float3 v2 = meshVerts[tris2];
 
-				float3 n = normalize(cross(v1 - v0, v2 - v0));
-
-				// test 1 (r should be between 0 and 1)
-				float denom = dot(n, light - fi.position.xyz);
-				if (denom == 0.0f) continue;
-				float numer = dot(n, v0 - fi.position.xyz);
-				float r = numer / denom;
-
-				if (r <= 0.000001f || r >= 0.999999f) continue;
-
-				// test 2 (s, t, and s+t should be between 0 and 1)
-				float3 p = (light - fi.position.xyz) * r + fi.position.xyz;
-				float3 w = p - v0;
-				float3 u = v1 - v0;
-				float3 v = v2 - v0;
-
-				float uu = dot(v1 - v0, v1 - v0);
-				float vv = dot(v2 - v0, v2 - v0);
-				float uv = dot(v1 - v0, v2 - v0);
-				float wu = dot(p - v0, v1 - v0);
-				float wv = dot(p - v0, v2 - v0);
-
-				denom = uv * uv - uu * vv;
-				float s = (uv * wv - vv * wu) / denom;
-				float t = (uv * wu - uu * wv) / denom;
-				if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) continue;
+				float s, t;
+				if (!IsIntersectWithTriangle(fi.position.xyz, light, v0, v1, v2, s, t)) continue;
 
 				// lookup the texture to see if the color is black or white
 				float2 texCoord0 = meshTexCoords[tris0];
@@ -123,23 +169,8 @@ void FragmentMain(
 		}
 	}
 
-	// define the normal according to which face is visible to the eye
-	float3 normal = fi.normal;
-	if (dot(fi.normal, eyePosition - fi.position.xyz) < 0) {
-		normal = normal * -1;
-	}
-
-	// Phong shading
-	float3 L = normalize(lightOrig - fi.position.xyz);
-
-	float ambient = Ka;
-	float diffuse = max(dot(L, normal), 0) * count / numLight / numLight;
-
-	float3 V = normalize(eyePosition - fi.position.xyz);
-	float specular = pow(max(dot(normal * dot(V, normal) * 2 - V, L), 0), Ks) * count / numLight / numLight;
-	
-	color.rgb = fi.color.rgb * (ambient + diffuse + specular);
-	color.a = 1;
+	// define the color according to Phong shading
+	color = PhongShading(fi.position.xyz, fi.color, fi.normal, lightOrig, eyePosition, Ka, Kd, Ks, count / numLight / numLight);
 
 	float4 proj = mul(modelViewProj, fi.position);
 
@@ -158,4 +189,4 @@ void FragmentMain(
 	}
 }
 
-				
+			
