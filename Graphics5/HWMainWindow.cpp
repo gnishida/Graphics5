@@ -45,4 +45,7 @@ void HWMainWindow::Render(std::vector<TMesh*>* meshes, PPC* ppc) {
 		si->PerFrameDisable();
 		si->DisableProfiles();
 	}
+
+	glReadBuffer(GL_FRONT);
+	glReadPixels(0, 0, frame->w, frame->h, GL_RGBA, GL_UNSIGNED_BYTE, frame->pix);
 }
