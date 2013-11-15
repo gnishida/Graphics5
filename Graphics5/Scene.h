@@ -35,7 +35,7 @@ public:
 	vector<TMesh*> meshes;
 
 	static Light* light;
-	static int light_step;
+	static float light_step;
 
 	V3 pos[3];
 

@@ -18,8 +18,8 @@ using namespace std;
 #define HIGH_RES		1
 
 Scene *scene;
-Light* Scene::light = new Light(V3(200.0f, 100.0f, 0.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
-int Scene::light_step = 1;
+Light* Scene::light = new Light(V3(200.0f, 200.0f, 0.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
+float Scene::light_step = 1.0f;
 
 Scene::Scene() {
 	mipmap_mode = true;
@@ -58,44 +58,44 @@ Scene::Scene() {
  */
 void Scene::Demo() {
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 30.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 30.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 10.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Quad(100, 100, V3(0.0f, 1.0f, 1.0f));
+	mesh = new Quad(200, 200, V3(0.0f, 1.0f, 1.0f));
 	mesh->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	meshes.push_back(mesh);
 
 	// (1) In the first 10 sec, only the boxes move around.
 	for (int i = 0; i < 300; i++) {
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
 		Fl::wait();
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.
-	for (int i = 0; i < 300; i++) {
-		(i < 150) ? light_step++ : light_step--;
+	for (int i = 300; i < 600; i++) {
+		light_step += (i < 450) ? 0.1f : -0.1f;
 
 		Render();
 		Fl::wait();
 	}
 
 	// (3) In the next 10 sec, the light and the boxes move around.
-	for (int i = 0; i < 300; i++) {
-		light->position[0] += (i % 200 < 100) ? 1.0f : -1.0f;
+	for (int i = 600; i < 900; i++) {
+		light->position[2] += ((i - 525) % 150 < 75) ? 1.0f : -1.0f;
 
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
 		Fl::wait();
@@ -107,30 +107,30 @@ void Scene::Demo() {
 	}
 
 	// (1) In the first 10 sec, only the boxes move around.
-	for (int i = 0; i < 300; i++) {
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+	for (int i = 900; i < 1200; i++) {
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
 		Fl::wait();
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.
-	for (int i = 0; i < 300; i++) {
-		(i < 150) ? light_step++ : light_step--;
+	for (int i = 1200; i < 1500; i++) {
+		light_step += (i < 1350) ? 0.1f : -0.1f;
 
 		Render();
 		Fl::wait();
 	}
 
 	// (3) In the next 10 sec, the light and the boxes move around.
-	for (int i = 0; i < 300; i++) {
-		light->position[0] += (i % 200 < 100) ? 1.0f : -1.0f;
+	for (int i = 1500; i < 1800; i++) {
+		light->position[2] += ((i - 1425) % 150 < 75) ? 1.0f : -1.0f;
 
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
 		Fl::wait();
@@ -152,51 +152,51 @@ void Scene::Save() {
 	char filename[256];
 
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 30.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 30.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 10.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Quad(100, 100, V3(0.0f, 1.0f, 1.0f));
+	mesh = new Quad(200, 200, V3(0.0f, 1.0f, 1.0f));
 	mesh->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
 	meshes.push_back(mesh);
 
 	// (1) In the first 10 sec, only the boxes move around.
 	for (int i = 0; i < 300; i++) {
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
-		sprintf(filename, "captured\\scene%03d.tif", i);
+		sprintf(filename, "captured\\scene%04d.tif", i);
 		win->frame->Save(filename);
 		Fl::wait();
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.
 	for (int i = 300; i < 600; i++) {
-		(i < 450) ? light_step++ : light_step--;
+		light_step += (i < 450) ? 0.1f : -0.1f;
 
 		Render();
-		sprintf(filename, "captured\\scene%03d.tif", i);
+		sprintf(filename, "captured\\scene%04d.tif", i);
 		win->frame->Save(filename);
 		Fl::wait();
 	}
 
 	// (3) In the next 10 sec, the light and the boxes move around.
 	for (int i = 600; i < 900; i++) {
-		light->position[0] += (i % 200 < 100) ? 1.0f : -1.0f;
+		light->position[2] += ((i - 525) % 150 < 75) ? 1.0f : -1.0f;
 
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
-		sprintf(filename, "captured\\scene%03d.tif", i);
+		sprintf(filename, "captured\\scene%04d.tif", i);
 		win->frame->Save(filename);
 		Fl::wait();
 	}
@@ -208,36 +208,36 @@ void Scene::Save() {
 
 	// (1) In the first 10 sec, only the boxes move around.
 	for (int i = 900; i < 1200; i++) {
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
-		sprintf(filename, "captured\\scene%03d.tif", i);
+		sprintf(filename, "captured\\scene%04d.tif", i);
 		win->frame->Save(filename);
 		Fl::wait();
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.
 	for (int i = 1200; i < 1500; i++) {
-		(i < 1350) ? light_step++ : light_step--;
+		light_step += (i < 1350) ? 0.1f : -0.1f;
 
 		Render();
-		sprintf(filename, "captured\\scene%03d.tif", i);
+		sprintf(filename, "captured\\scene%04d.tif", i);
 		win->frame->Save(filename);
 		Fl::wait();
 	}
 
 	// (3) In the next 10 sec, the light and the boxes move around.
 	for (int i = 1500; i < 1800; i++) {
-		light->position[0] += (i % 200 < 100) ? 1.0f : -1.0f;
+		light->position[2] += ((i - 1425) % 150 < 75) ? 1.0f : -1.0f;
 
-		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
-		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 0.4f, V3(0.0f, 0.0f, 0.0f));
+		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
+		meshes[2]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 
 		Render();
-		sprintf(filename, "captured\\scene%03d.tif", i);
+		sprintf(filename, "captured\\scene%04d.tif", i);
 		win->frame->Save(filename);
 		Fl::wait();
 	}
