@@ -31,8 +31,8 @@ Scene::Scene() {
 	int u0 = 20;
 	int v0 = 50;
 	int sci = 2;
-	int w = sci*240;//640;
-	int h = sci*180;//360;
+	int w = sci*640;//240;//640;
+	int h = sci*360;//180;//360;
 
 	// create HW framebuffer
 	win = new HWMainWindow(u0, v0, w, h);
