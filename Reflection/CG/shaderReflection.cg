@@ -1,0 +1,193 @@
+/**
+ * This shader implements shadow mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float3 normal	: NORMAL;
+	float2 texCoord	: TEXCOORD0;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float2 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float2 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+struct FragmentOutput {
+	float4 color	: COLOR;
+};
+
+bool IsIntersectWithRectanble(
+				in float3 position,
+				in float3 dir,
+				in float3 v0,
+				in float3 v1,
+				in float3 v2,
+				out float r,
+				out float s,
+				out float t) {
+	float3 n = normalize(cross(v1 - v0, v2 - v0));
+
+	// test 1 (r should be between 0 and 1)
+	float denom = dot(n, dir);
+	if (denom == 0.0f) return false;
+
+	float numer = dot(n, v0 - position);
+	r = numer / denom;
+
+	if (r <= 0.000001f) return false;
+
+	// test 2 (s, t, and s+t should be between 0 and 1)
+	float3 p = dir * r + position;
+	float3 w = p - v0;
+	float3 u = v1 - v0;
+	float3 v = v2 - v0;
+
+	float uu = dot(v1 - v0, v1 - v0);
+	float vv = dot(v2 - v0, v2 - v0);
+	float uv = dot(v1 - v0, v2 - v0);
+	float wu = dot(p - v0, v1 - v0);
+	float wv = dot(p - v0, v2 - v0);
+
+	denom = uv * uv - uu * vv;
+	s = (uv * wv - vv * wu) / denom;
+	t = (uv * wu - uu * wv) / denom;
+	if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
+
+	return true;
+}
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = vi.texCoord;
+	vo.objectPos = vi.position;
+	vo.color = vi.color;
+	vo.normal = vi.normal;
+
+	return vo;
+}
+
+FragmentOutput FragmentMain(
+				FragmentInput fi,
+				uniform float3 billboard1[3],
+				uniform float3 billboard2[3],
+				uniform float3 billboard3[3],
+				uniform sampler2D billTex1,
+				uniform sampler2D billTex2,
+				uniform sampler2D billTex3,
+				uniform float3 eyePosition,
+				uniform float Ka,
+				uniform float Kd,
+				uniform float Ks,
+				uniform float isReflector,
+				uniform float useTex,
+				uniform sampler2D tex : TEX0,
+				uniform float4x4 modelViewProj) {
+	FragmentOutput fo;
+
+	// Non reflector just return its color.
+	if (isReflector == 1.0f) {
+		fo.color = fi.color;
+		return fo;
+	}
+
+	// Compute the reflected ray
+	float3 r = reflect(fi.position.xyz - eyePosition.xyz, fi.normal);
+
+	// Check the intersection with each billboard
+	float min_r = 999999.9f, min_s, min_t;
+	float r, s, t;
+	int id = -1;
+	if (IsIntersectWithRectanble(fi.position.xyz, r, billboard1[0], billboard1[1], billboard1[2], r, s, t)) {
+		id = 1;
+		min_r = r;
+		min_s = s;
+		min_t = t;
+	}
+	if (IsIntersectWithRectanble(fi.position.xyz, r, billboard2[0], billboard2[1], billboard2[2], r, s, t)) {
+		if (r < min_r) {
+			id = 2;
+			min_r = r;
+			min_s = s;
+			min_t = t;
+		}
+	}
+	if (IsIntersectWithRectanble(fi.position.xyz, r, billboard3[0], billboard3[1], billboard3[2], r, s, t)) {
+		if (r < min_r) {
+			id = 3;
+			min_r = r;
+			min_s = s;
+			min_t = t;
+		}
+	}
+
+	// If no intersection, return EM(r)
+
+
+
+
+
+
+	int intersected = 0;
+	for (int i = 0; i < 12 * 3; i++) {
+		int tris0 = (int)meshTris[i * 3];
+		int tris1 = (int)meshTris[i * 3 + 1];
+		int tris2 = (int)meshTris[i * 3 + 2];
+		float3 v0 = meshVerts[tris0];
+		float3 v1 = meshVerts[tris1];
+		float3 v2 = meshVerts[tris2];
+
+		float s, t;
+		if (!IsIntersectWithTriangle(fi.position.xyz, light, v0, v1, v2, s, t)) continue;
+
+		// lookup the texture to see if the color is black or white
+		float2 texCoord0 = meshTexCoords[tris0];
+		float2 texCoord1 = meshTexCoords[tris1];
+		float2 texCoord2 = meshTexCoords[tris2];
+		float2 texCoord = texCoord0 * (1 - s - t) + texCoord1 * s + texCoord2 * t;
+		float4 c = tex2D(tex, texCoord);
+		if (c.r >= 0.5f) continue;
+
+		// intersect!!!
+		intersected = 1;
+		break;
+	}
+
+
+
+	// define the color according to Phong shading
+	color = PhongShading(fi.position.xyz, fi.color, fi.normal, lightOrig, eyePosition, Ka, Kd, Ks, count / numLight / numLight);
+
+	float4 proj = mul(modelViewProj, fi.position);
+
+	// Stencil texture
+	if (useTex == 1.0f) {
+		float4 c = tex2D(tex, fi.texCoord);
+
+		if (c.r >= 0.5f) {
+			color.a = 0;
+			depth = 1.0f;
+		} else {
+			depth = proj.z * 0.005;
+		}
+	} else {
+		depth = proj.z * 0.005;
+	}
+}
+
+			

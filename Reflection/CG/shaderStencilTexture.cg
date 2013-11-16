@@ -1,0 +1,81 @@
+/**
+ * This shader implements Stencil Texture mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float3 normal	: NORMAL;
+	float2 texCoord	: TEXCOORD0;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float2 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float2 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = vi.texCoord;
+	vo.objectPos = vi.position;
+	vo.color = vi.color;
+	vo.normal = vi.normal;
+
+	return vo;
+}
+
+void FragmentMain(
+				FragmentInput fi,
+				out float4 color : COLOR,
+				out float depth : DEPTH,
+				uniform float3 lightPosition,
+				uniform float3 eyePosition,
+				uniform float Ka,
+				uniform float Kd,
+				uniform float Ks,
+				uniform float useTex,
+				uniform sampler2D tex : TEX0,
+				uniform float4x4 modelViewProj) {
+	// Phong shading
+	float3 L = normalize(lightPosition - fi.position.xyz);
+
+	float ambient = Ka;
+	float diffuse = max(dot(L, fi.normal), 0);
+
+	float3 V = normalize(eyePosition - fi.position.xyz);
+	float specular = pow(max(dot(fi.normal * dot(V, fi.normal) * 2 - V, L), 0), Ks);
+	
+	color.rgb = fi.color.rgb * (ambient + diffuse + specular);
+	color.a = 1;
+
+	float4 proj = mul(modelViewProj, fi.position);
+
+	// Stencil texture
+	if (useTex == 1.0f) {
+		float4 c = tex2D(tex, fi.texCoord);
+
+		if (c.r == 1 && c.g == 1 && c.b == 1) {
+			color.a = 0;
+			depth = 1.0f;
+		} else {
+			depth = proj.z * 0.005;
+		}
+	} else {
+		depth = proj.z * 0.005;
+	}
+}
+

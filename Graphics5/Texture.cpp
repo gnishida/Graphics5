@@ -70,5 +70,7 @@ GLuint Texture::Bind() {
 	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
+	binded = true;
+
 	return texture_id;
 }

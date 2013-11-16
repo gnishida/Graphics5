@@ -1,0 +1,61 @@
+/**
+ * This shader implements shadow mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float3 normal	: NORMAL;
+	float2 texCoord	: TEXCOORD0;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float2 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float2 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
+	float3 normal	: TEXCOORD2;
+	float4 color	: COLOR;
+};
+
+struct FragmentOutput {
+	float4 color	: COLOR;
+};
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = vi.texCoord;
+	vo.objectPos = vi.position;
+	vo.color = vi.color;
+	vo.normal = vi.normal;
+
+ 	return vo;
+}
+
+FragmentOutput FragmentMain(
+				FragmentInput fi,
+				uniform float3 eyePosition,
+				uniform samplerCUBE environmentMap) {
+	FragmentOutput fo;
+
+	// Compute the reflected ray
+	float3 r = reflect(fi.position - eyePosition, fi.normal);
+
+	fo.color = texCUBE(environmentMap, r);
+	//fo.color = tex2D(environmentMap, fi.texCoord.xy);
+	//fo.color = fi.color;
+
+	return fo;
+}
+
+			

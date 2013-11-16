@@ -1,0 +1,49 @@
+/**
+ * This shader implements projective texture mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float4 texCoord	: TEXCOORD0;
+};
+
+struct FragmentInput {
+	float4 position : POSITION;
+	float4 texCoord	: TEXCOORD0;
+};
+
+struct FragmentOutput {
+	float4 color	: COLOR;
+};
+
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj,
+				uniform float4x4 textureMatrix) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = mul(textureMatrix, vi.position);
+
+	return vo;
+}
+
+FragmentOutput FragmentMain(
+				FragmentInput fi,
+				uniform sampler2D projectiveMap) {
+	FragmentOutput fo;
+
+	if (fi.texCoord.w >= 0) {
+		fo.color = tex2Dproj(projectiveMap, fi.texCoord);
+	} else {
+		fo.color = 0;
+	}
+
+	return fo;
+}
+

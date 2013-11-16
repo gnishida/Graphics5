@@ -1,0 +1,85 @@
+/**
+ * This shader implements shadow mapping.
+ */
+
+struct VertexInput {
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float3 normal	: NORMAL;
+};
+
+struct VertexOutput {
+	float4 position : POSITION;
+	float4 texCoord	: TEXCOORD0;
+	float4 objectPos: TEXCOORD1;
+	float4 color	: COLOR;
+};
+
+struct FragmentInput {
+	float4 texCoord	: TEXCOORD0;
+	float4 position : TEXCOORD1;
+	float4 color	: COLOR;
+};
+
+struct FragmentOutput {
+	float4 color	: COLOR;
+};
+
+
+VertexOutput VertexMain(
+				VertexInput vi,
+				uniform float4x4 modelViewProj,
+				uniform float4x4 textureMatrix) {
+	VertexOutput vo;
+
+	vo.position = mul(modelViewProj, vi.position);
+	vo.texCoord = mul(textureMatrix, vi.position);
+	vo.objectPos = vi.position;
+	vo.color = vi.color;
+
+	return vo;
+}
+
+FragmentOutput FragmentMain(
+				FragmentInput fi,
+				uniform sampler2D shadowMap,
+				uniform float4x4 modelViewProj) {
+	FragmentOutput fo;
+
+	float4 shadowCoeff = tex2Dproj(shadowMap, fi.texCoord);
+	//float shadow = tex2D(shadowMap, fi.texCoord.xy);
+	
+	fo.color = fi.color * shadowCoeff;
+	/*
+	float4 pos = mul(modelViewProj, fi.position);
+	if (fi.texCoord.z <= pos.z) {
+		fo.color = fi.color;
+	} else {
+		fo.color = 0;
+	}
+	*/
+
+	/*
+	fo.color.r = fi.texCoord.z * 0.005;
+	fo.color.g = fi.texCoord.z * 0.005;
+	fo.color.b = fi.texCoord.z * 0.005;
+	fo.color.a = 1;
+	*/
+	
+	/*
+	fo.color.r = shadow * 10000;
+	fo.color.g = shadow;
+	fo.color.b = shadow;
+	fo.color.a = 1;
+	*/
+
+	/*
+	fo.color.r = fi.position.z * 0.005;
+	fo.color.g = fi.position.z * 0.005;
+	fo.color.b = fi.position.z * 0.005;
+	fo.color.a = 1;
+	*/
+
+	return fo;
+}
+

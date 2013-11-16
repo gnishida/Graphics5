@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics5", "Graphics5\Graphics5.vcxproj", "{13CBCADD-12FC-44BB-9921-EC73BC5E8DDA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reflection", "Reflection\Reflection.vcxproj", "{932DCB30-1F84-420E-B482-9CACCEFAB4A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,9 @@ Global
 		{13CBCADD-12FC-44BB-9921-EC73BC5E8DDA}.Debug|Win32.Build.0 = Debug|Win32
 		{13CBCADD-12FC-44BB-9921-EC73BC5E8DDA}.Release|Win32.ActiveCfg = Release|Win32
 		{13CBCADD-12FC-44BB-9921-EC73BC5E8DDA}.Release|Win32.Build.0 = Release|Win32
+		{932DCB30-1F84-420E-B482-9CACCEFAB4A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{932DCB30-1F84-420E-B482-9CACCEFAB4A6}.Debug|Win32.Build.0 = Debug|Win32
+		{932DCB30-1F84-420E-B482-9CACCEFAB4A6}.Release|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
