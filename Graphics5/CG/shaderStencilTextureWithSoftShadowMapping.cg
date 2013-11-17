@@ -115,7 +115,7 @@ void FragmentMain(
 				FragmentInput fi,
 				out float4 color : COLOR,
 				out float depth : DEPTH,
-				uniform float meshTris[18 * 3],
+				uniform float meshTris[15 * 3],
 				uniform float3 meshVerts[24 * 3],
 				uniform float3 meshNorms[24 * 3],
 				uniform float2 meshTexCoords[24 * 3],
@@ -143,7 +143,7 @@ void FragmentMain(
 
 			// Check the intersection with each triangle
 			int intersected = 0;
-			for (int i = 0; i < 6 * 3; i++) {
+			for (int i = 0; i < 5 * 3; i++) {
 				int tris0 = (int)meshTris[i * 3];
 				int tris1 = (int)meshTris[i * 3 + 1];
 				int tris2 = (int)meshTris[i * 3 + 2];

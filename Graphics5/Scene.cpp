@@ -18,7 +18,7 @@ using namespace std;
 
 Scene *scene;
 Light* Scene::light = new Light(V3(200.0f, 200.0f, 0.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
-float Scene::light_step = 1.0f;
+float Scene::light_step = 2.0f;
 
 Scene::Scene() {
 	mipmap_mode = true;

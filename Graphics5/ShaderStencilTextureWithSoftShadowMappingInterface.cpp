@@ -50,12 +50,12 @@ void ShaderStencilTextureWithSoftShadowMappingInterface::PerFrameInit() {
 	}
 
 	// copy the vertices data
-	float tris[3][18];
+	float tris[3][15];
 	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 6; j++) {
-			tris[i][j * 3] = (float)scene->meshes[i]->tris[j * 6] + i * 24;
-			tris[i][j * 3 + 1] = (float)scene->meshes[i]->tris[j * 6 + 1] + i * 24;
-			tris[i][j * 3 + 2] = (float)scene->meshes[i]->tris[j * 6 + 5] + i * 24;
+		for (int j = 0; j < 5; j++) {
+			tris[i][j * 3] = (float)scene->meshes[i]->tris[(j + 1) * 6] + i * 24;
+			tris[i][j * 3 + 1] = (float)scene->meshes[i]->tris[(j + 1) * 6 + 1] + i * 24;
+			tris[i][j * 3 + 2] = (float)scene->meshes[i]->tris[(j + 1) * 6 + 5] + i * 24;
 		}
 	}
 
@@ -76,14 +76,14 @@ void ShaderStencilTextureWithSoftShadowMappingInterface::PerFrameInit() {
 	}
 
 	// set parameters for the fragment shader
-	cgGLSetParameterArray1f(fragmentMeshTris, 0, 18 * 3, (float*)tris[0]);
+	cgGLSetParameterArray1f(fragmentMeshTris, 0, 15 * 3, (float*)tris[0]);
 	cgGLSetParameterArray3f(fragmentMeshVerts, 0, 24 * 3, (float*)verts[0]);
 	cgGLSetParameterArray3f(fragmentMeshNorms, 0, 24 * 3, (float*)norms[0]);
 	cgGLSetParameterArray2f(fragmentMeshTexCoords, 0, 24 * 3, (float*)texCoords[0]);
 
 	cgGLSetParameter3fv(fragmentLightCenter, (float*)&scene->light->position);
 	cgGLSetParameter1f(fragmentLightStep, (float)scene->light_step);
-	cgGLSetParameter1f(fragmentNumLight, 2.0f);
+	cgGLSetParameter1f(fragmentNumLight, 4.0f);
 
 	cgGLSetParameter3fv(fragmentEyePosition, (float*) &(scene->currentPPC->C));
 	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
