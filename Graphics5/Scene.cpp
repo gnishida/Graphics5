@@ -84,7 +84,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.

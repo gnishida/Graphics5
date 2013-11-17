@@ -86,11 +86,12 @@ bool IsIntersectWithTriangle(
 	float wv = dot(p - v0, v2 - v0);
 
 	//denom = - uu * vv;
-	denom = -160000;
-	s = -400 * wu / denom;
-	t = -400 * wv / denom;
+	//denom = -160000;
+	//s = wu * 0.0025;
+	//t = wv * 0.0025;
 	//if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
-	if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
+	//if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
+	if (wu <= 0.0004f || wv <= 0.0004f || wu >= 399.9996f || wv >= 399.9996f) return false;
 
 	return true;
 }
