@@ -55,7 +55,7 @@ void ShaderSoftShadowMappingInterface::PerFrameInit() {
 
 	cgGLSetParameter3fv(fragmentLightOrig, (float*)&scene->light->position);
 	cgGLSetParameter1f(fragmentLightStep, 1.0f);
-	cgGLSetParameter1f(fragmentNumLight, 1.0f);
+	cgGLSetParameter1f(fragmentNumLight, 16.0f);
 
 	cgGLSetParameter3fv(fragmentEyePosition, (float*) &(scene->currentPPC->C));
 	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));

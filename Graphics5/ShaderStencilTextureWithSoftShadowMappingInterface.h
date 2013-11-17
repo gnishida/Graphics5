@@ -5,10 +5,11 @@
 class ShaderStencilTextureWithSoftShadowMappingInterface : public ShaderInterface {
 private:
 	CGparameter vertexModelViewProj;
+
 	CGparameter fragmentMeshTris;
 	CGparameter fragmentMeshVerts;
+	CGparameter fragmentMeshNorms;
 	CGparameter fragmentMeshTexCoords;
-	CGparameter fragmentMeshTex;
 
 	CGparameter fragmentLightCenter;
 	CGparameter fragmentLightStep;

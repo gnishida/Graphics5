@@ -57,39 +57,40 @@ float4 PhongShading(
 
 bool IsIntersectWithTriangle(
 				in float3 position,
-				in float3 light,
+				in float3 dir,
 				in float3 v0,
 				in float3 v1,
 				in float3 v2,
+				in float3 n,
 				out float s,
 				out float t) {
-	float3 n = normalize(cross(v1 - v0, v2 - v0));
-
 	// test 1 (r should be between 0 and 1)
-	float denom = dot(n, light - position);
+	float denom = dot(n, dir);
 	if (denom == 0.0f) return false;
 
 	float numer = dot(n, v0 - position);
 	float r = numer / denom;
 
 	if (r <= 0.000001f || r >= 0.999999f) return false;
-
+	
 	// test 2 (s, t, and s+t should be between 0 and 1)
-	float3 p = (light - position) * r + position;
-	float3 w = p - v0;
-	float3 u = v1 - v0;
-	float3 v = v2 - v0;
+	float3 p = dir * r + position;
+	//float3 w = p - v0;
+	//float3 u = v1 - v0;
+	//float3 v = v2 - v0;
 
-	float uu = dot(v1 - v0, v1 - v0);
-	float vv = dot(v2 - v0, v2 - v0);
-	float uv = dot(v1 - v0, v2 - v0);
+	//float uu = dot(v1 - v0, v1 - v0);
+	//float vv = dot(v2 - v0, v2 - v0);
+	//float uv = dot(v1 - v0, v2 - v0);
 	float wu = dot(p - v0, v1 - v0);
 	float wv = dot(p - v0, v2 - v0);
 
-	denom = uv * uv - uu * vv;
-	s = (uv * wv - vv * wu) / denom;
-	t = (uv * wu - uu * wv) / denom;
-	if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
+	//denom = - uu * vv;
+	denom = -160000;
+	s = -400 * wu / denom;
+	t = -400 * wv / denom;
+	//if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
+	if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
 
 	return true;
 }
@@ -112,8 +113,9 @@ void FragmentMain(
 				FragmentInput fi,
 				out float4 color : COLOR,
 				out float depth : DEPTH,
-				uniform float meshTris[36 * 3],
+				uniform float meshTris[18 * 3],
 				uniform float3 meshVerts[24 * 3],
+				uniform float3 meshNorms[24 * 3],
 				uniform float2 meshTexCoords[24 * 3],
 				uniform float3 lightCenter,
 				uniform float lightStep,
@@ -139,16 +141,17 @@ void FragmentMain(
 
 			// Check the intersection with each triangle
 			int intersected = 0;
-			for (int i = 0; i < 12 * 3; i++) {
+			for (int i = 0; i < 6 * 3; i++) {
 				int tris0 = (int)meshTris[i * 3];
 				int tris1 = (int)meshTris[i * 3 + 1];
 				int tris2 = (int)meshTris[i * 3 + 2];
 				float3 v0 = meshVerts[tris0];
 				float3 v1 = meshVerts[tris1];
 				float3 v2 = meshVerts[tris2];
+				float3 n = meshNorms[tris0];
 
 				float s, t;
-				if (!IsIntersectWithTriangle(fi.position.xyz, light, v0, v1, v2, s, t)) continue;
+				if (!IsIntersectWithTriangle(fi.position.xyz, light - fi.position.xyz, v0, v1, v2, n, s, t)) continue;
 
 				// lookup the texture to see if the color is black or white
 				float2 texCoord0 = meshTexCoords[tris0];

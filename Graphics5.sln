@@ -16,7 +16,6 @@ Global
 		{13CBCADD-12FC-44BB-9921-EC73BC5E8DDA}.Release|Win32.ActiveCfg = Release|Win32
 		{13CBCADD-12FC-44BB-9921-EC73BC5E8DDA}.Release|Win32.Build.0 = Release|Win32
 		{932DCB30-1F84-420E-B482-9CACCEFAB4A6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{932DCB30-1F84-420E-B482-9CACCEFAB4A6}.Debug|Win32.Build.0 = Debug|Win32
 		{932DCB30-1F84-420E-B482-9CACCEFAB4A6}.Release|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

@@ -16,8 +16,6 @@
 
 using namespace std;
 
-#define HIGH_RES		1
-
 Scene *scene;
 Light* Scene::light = new Light(V3(200.0f, 200.0f, 0.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
 float Scene::light_step = 1.0f;
@@ -62,10 +60,10 @@ void Scene::Demo() {
 	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 30.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 10.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
+	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Quad(200, 200, V3(0.0f, 1.0f, 1.0f));
@@ -86,7 +84,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.
@@ -99,7 +97,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// (3) In the next 10 sec, the light and the boxes move around.
@@ -116,7 +114,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// For the second half of the demo, apply the texture to the boxes
@@ -136,7 +134,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// (2) In the next 10 sec, the light grow and shrink.
@@ -149,7 +147,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// (3) In the next 10 sec, the light and the boxes move around.
@@ -166,7 +164,7 @@ void Scene::Demo() {
 		Fl::wait();
 
 		end = clock();
-		fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
+		//fprintf(stdout, "FPS: %.1f\n", (double)CLOCKS_PER_SEC / (double)(end - start));
 	}
 
 	// release the memory
