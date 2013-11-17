@@ -43,7 +43,7 @@ Scene::Scene() {
 	
 	// create a camera
 	PPC* ppc = new PPC(60.0f, w, h);
-	ppc->LookAt(V3(0.0f, 0.0f, 0.0f), V3(0.0f, -1.0f, -1.0f), V3(0.0f, 1.0f, -1.0f), 150.0f);
+	ppc->LookAt(V3(0.0f, 0.0f, 0.0f), V3(0.0f, -1.0f, -1.0f), V3(0.0f, 1.0f, -1.0f), 100.0f);
 	ppcs.push_back(ppc);
 
 	currentPPC = ppcs[0];
@@ -57,13 +57,13 @@ Scene::Scene() {
  */
 void Scene::Demo() {
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-32.0f, 0.0f, -10.0f), V3(-12.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 20.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -32.0f), V3(10.0f, 30.0f, -12.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
+	mesh = new Box(V3(12.0f, 0.0f, -10.0f), V3(32.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Quad(200, 200, V3(0.0f, 1.0f, 1.0f));
@@ -104,7 +104,8 @@ void Scene::Demo() {
 	for (int i = 600; i < 900; i++) {
 		start = clock();
 
-		light->position[2] += ((i - 525) % 150 < 75) ? 1.0f : -1.0f;
+		//light->position[2] += ((i - 525) % 150 < 75) ? 1.0f : -1.0f;
+		light->position[0] -= 2.0f;
 
 		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
@@ -154,7 +155,8 @@ void Scene::Demo() {
 	for (int i = 1500; i < 1800; i++) {
 		start = clock();
 
-		light->position[2] += ((i - 1425) % 150 < 75) ? 1.0f : -1.0f;
+		//light->position[2] += ((i - 1425) % 150 < 75) ? 1.0f : -1.0f;
+		light->position[0] += 2.0f;
 
 		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
@@ -168,10 +170,12 @@ void Scene::Demo() {
 	}
 
 	// release the memory
+	/*
 	for (int i = 0; i < meshes.size(); i++) {
 		delete meshes[i];
 	}
 	meshes.clear();
+	*/
 }
 
 /**
@@ -183,13 +187,13 @@ void Scene::Save() {
 	char filename[256];
 
 	// Create a scene
-	TMesh* mesh = new Box(V3(-40.0f, 0.0f, -10.0f), V3(-20.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
+	TMesh* mesh = new Box(V3(-32.0f, 0.0f, -10.0f), V3(-12.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, -40.0f), V3(10.0f, 30.0f, -20.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -32.0f), V3(10.0f, 20.0f, -12.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(20.0f, 0.0f, -10.0f), V3(40.0f, 10.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
+	mesh = new Box(V3(12.0f, 0.0f, -10.0f), V3(32.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Quad(200, 200, V3(0.0f, 1.0f, 1.0f));
