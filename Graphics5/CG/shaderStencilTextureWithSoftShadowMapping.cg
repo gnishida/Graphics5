@@ -86,11 +86,8 @@ bool IsIntersectWithTriangle(
 	float wv = dot(p - v0, v2 - v0);
 
 	denom = uu * vv;
-	//denom = -160000;
 	s = vv * wu / denom;
 	t = uu * wv / denom;
-	//s = wu * 0.0025;
-	//t = wv * 0.0025;
 	//if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
 	if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
 
@@ -115,10 +112,9 @@ void FragmentMain(
 				FragmentInput fi,
 				out float4 color : COLOR,
 				out float depth : DEPTH,
-				uniform float meshTris[15 * 3],
-				uniform float3 meshVerts[24 * 3],
-				uniform float3 meshNorms[24 * 3],
-				uniform float2 meshTexCoords[24 * 3],
+				uniform float3 meshVerts[15 * 3],
+				uniform float3 meshNorms[5 * 3],
+				uniform float2 meshTexCoords[15 * 3],
 				uniform float3 lightCenter,
 				uniform float lightStep,
 				uniform float numLight,
@@ -144,22 +140,11 @@ void FragmentMain(
 			// Check the intersection with each triangle
 			int intersected = 0;
 			for (int i = 0; i < 5 * 3; i++) {
-				int tris0 = (int)meshTris[i * 3];
-				int tris1 = (int)meshTris[i * 3 + 1];
-				int tris2 = (int)meshTris[i * 3 + 2];
-				float3 v0 = meshVerts[tris0];
-				float3 v1 = meshVerts[tris1];
-				float3 v2 = meshVerts[tris2];
-				float3 n = meshNorms[tris0];
-
 				float s, t;
-				if (!IsIntersectWithTriangle(fi.position.xyz, light - fi.position.xyz, v0, v1, v2, n, s, t)) continue;
+				if (!IsIntersectWithTriangle(fi.position.xyz, light - fi.position.xyz, meshVerts[i * 3], meshVerts[i * 3 + 1], meshVerts[i * 3 + 2], meshNorms[i], s, t)) continue;
 
 				// lookup the texture to see if the color is black or white
-				float2 texCoord0 = meshTexCoords[tris0];
-				float2 texCoord1 = meshTexCoords[tris1];
-				float2 texCoord2 = meshTexCoords[tris2];
-				float2 texCoord = texCoord0 * (1 - s - t) + texCoord1 * s + texCoord2 * t;
+				float2 texCoord = meshTexCoords[i * 3] * (1 - s - t) + meshTexCoords[i * 3 + 1] * s + meshTexCoords[i * 3 + 2] * t;
 				float4 c = tex2D(tex, texCoord);
 				if (c.r >= 0.5f) continue;
 
