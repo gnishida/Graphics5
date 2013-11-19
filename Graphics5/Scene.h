@@ -37,10 +37,6 @@ public:
 	static Light* light;
 	static float light_step;
 
-	V3 pos[3];
-
-	bool mipmap_mode;
-
 public:
 	Scene();
 	void Demo();

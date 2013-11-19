@@ -18,11 +18,9 @@ using namespace std;
 
 Scene *scene;
 Light* Scene::light = new Light(V3(200.0f, 200.0f, 0.0f), Light::TYPE_POINT_LIGHT, 0.4f, 0.6f, 40.0f);
-float Scene::light_step = 2.0f;
+float Scene::light_step = 1.0f;
 
 Scene::Scene() {
-	mipmap_mode = true;
-
 	// create user interface
 	gui = new GUI();
 	gui->show();
@@ -30,8 +28,8 @@ Scene::Scene() {
 	int u0 = 20;
 	int v0 = 50;
 	int sci = 2;
-	int w = sci*240;//640;
-	int h = sci*180;//360;
+	int w = sci*640;//240;//640;
+	int h = sci*360;//180;//360;
 
 	// create HW framebuffer
 	win = new HWMainWindow(u0, v0, w, h);

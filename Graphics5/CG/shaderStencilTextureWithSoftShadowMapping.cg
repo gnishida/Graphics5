@@ -129,7 +129,7 @@ void FragmentMain(
 				uniform float4x4 modelViewProj) {
 	float3 lightOrig = lightCenter;
 	lightOrig.x -= numLight * 0.5f * lightStep;
-	lightOrig.y -= numLight * 0.5f * lightStep;
+	lightOrig.z -= numLight * 0.5f * lightStep;
 
 	// Compute the visibility to the light sources
 	float count = 0.0f;
@@ -137,7 +137,7 @@ void FragmentMain(
 		for (int u = 0; u < numLight; u++) {
 			float3 light = lightOrig;
 			light.x += u * lightStep;
-			light.y += v * lightStep;
+			light.z += v * lightStep;
 
 			// Check the intersection with each triangle
 			int intersected = 0;
