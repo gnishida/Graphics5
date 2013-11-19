@@ -102,8 +102,7 @@ void Scene::Demo() {
 	for (int i = 600; i < 900; i++) {
 		start = clock();
 
-		//light->position[2] += ((i - 525) % 150 < 75) ? 1.0f : -1.0f;
-		light->position[0] -= 2.0f;
+		light->position[0] -= 1.2f;
 
 		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
@@ -153,8 +152,7 @@ void Scene::Demo() {
 	for (int i = 1500; i < 1800; i++) {
 		start = clock();
 
-		//light->position[2] += ((i - 1425) % 150 < 75) ? 1.0f : -1.0f;
-		light->position[0] += 2.0f;
+		light->position[0] += 1.2f;
 
 		meshes[0]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
 		meshes[1]->RotateAbout(V3(0.0f, 1.0f, 0.0f), 1.2f, V3(0.0f, 0.0f, 0.0f));
