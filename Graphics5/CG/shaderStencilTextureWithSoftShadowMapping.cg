@@ -133,6 +133,7 @@ void FragmentMain(
 
 	// Compute the visibility to the light sources
 	float count = 0.0f;
+
 	for (int v = 0; v < numLight; v++) {
 		for (int u = 0; u < numLight; u++) {
 			float3 light = lightOrig;
@@ -162,7 +163,7 @@ void FragmentMain(
 	}
 
 	// define the color according to Phong shading
-	color = PhongShading(fi.position.xyz, fi.color, fi.normal, lightOrig, eyePosition, Ka, Kd, Ks, count / numLight / numLight);
+	color = PhongShading(fi.position.xyz, fi.color, fi.normal, lightCenter, eyePosition, Ka, Kd, Ks, count / numLight / numLight);
 
 	float4 proj = mul(modelViewProj, fi.position);
 

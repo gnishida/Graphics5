@@ -101,7 +101,7 @@ void ShaderStencilTextureWithSoftShadowMappingInterface::PerFrameInit() {
 
 	cgGLSetParameter3fv(fragmentLightCenter, (float*)&scene->light->position);
 	cgGLSetParameter1f(fragmentLightStep, (float)scene->light_step);
-	cgGLSetParameter1f(fragmentNumLight, 1.0f);
+	cgGLSetParameter1f(fragmentNumLight, 16.0f);
 
 	cgGLSetParameter3fv(fragmentEyePosition, (float*) &(scene->currentPPC->C));
 	cgGLSetParameter3fv(fragmentKa, (float*) &(scene->light->ambient));
