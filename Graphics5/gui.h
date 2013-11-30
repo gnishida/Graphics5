@@ -24,7 +24,7 @@ public:
   void show();
   void Demo_cb();
   void Save_cb();
-  void ProjectorDemo_cb();
-  void SaveProjector_cb();
+  void StencilDemo_cb();
+  void SaveStencil_cb();
 };
 #endif

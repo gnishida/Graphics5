@@ -17,14 +17,14 @@ void GUI::cb_Save(Fl_Button* o, void* v) {
 }
 
 void GUI::cb_Demo1_i(Fl_Button*, void*) {
-  ProjectorDemo_cb();
+  StencilDemo_cb();
 }
 void GUI::cb_Demo1(Fl_Button* o, void* v) {
   ((GUI*)(o->parent()->parent()->user_data()))->cb_Demo1_i(o,v);
 }
 
 void GUI::cb_Save1_i(Fl_Button*, void*) {
-  SaveProjector_cb();
+  SaveStencil_cb();
 }
 void GUI::cb_Save1(Fl_Button* o, void* v) {
   ((GUI*)(o->parent()->parent()->user_data()))->cb_Save1_i(o,v);
@@ -34,7 +34,7 @@ void GUI::cb_Save1(Fl_Button* o, void* v) {
 GUI::GUI() {
   { uiw = new Fl_Double_Window(351, 326, "GUI");
     uiw->user_data((void*)(this));
-    { Fl_Group* o = new Fl_Group(5, 23, 335, 124, "Projective Texture Mapping & Shadow Mapping");
+    { Fl_Group* o = new Fl_Group(5, 23, 335, 124, "Soft Shadow Mapping");
       o->box(FL_DOWN_BOX);
       o->color((Fl_Color)16);
       o->selection_color(FL_INACTIVE_COLOR);
@@ -50,7 +50,7 @@ GUI::GUI() {
       } // Fl_Button* o
       o->end();
     } // Fl_Group* o
-    { Fl_Group* o = new Fl_Group(5, 190, 335, 125, "Moving Projector");
+    { Fl_Group* o = new Fl_Group(5, 190, 335, 125, "Stencil Texture Mapping");
       o->box(FL_DOWN_BOX);
       o->color((Fl_Color)16);
       o->labelfont(1);
@@ -86,10 +86,10 @@ void GUI::Save_cb() {
   scene->Save();
 }
 
-void GUI::ProjectorDemo_cb() {
-  scene->ProjectorDemo();
+void GUI::StencilDemo_cb() {
+  scene->StencilDemo();
 }
 
-void GUI::SaveProjector_cb() {
-  scene->SaveProjector();
+void GUI::SaveStencil_cb() {
+  scene->SaveStencil();
 }

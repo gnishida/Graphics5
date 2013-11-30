@@ -9,10 +9,10 @@ class GUI {open
   } {
     Fl_Window uiw {
       label GUI open
-      xywh {742 287 351 326} type Double visible
+      xywh {742 287 351 326} type Double hide
     } {
       Fl_Group {} {
-        label {Projective Texture Mapping & Shadow Mapping} open
+        label {Soft Shadow Mapping} open
         xywh {5 23 335 124} box DOWN_BOX color 16 selection_color 8 labelfont 1 labelcolor 4
       } {
         Fl_Button {} {
@@ -27,17 +27,17 @@ class GUI {open
         }
       }
       Fl_Group {} {
-        label {Moving Projector} open selected
+        label {Stencil Texture Mapping} open
         xywh {5 190 335 125} box DOWN_BOX color 16 labelfont 1 labelcolor 4
       } {
         Fl_Button {} {
           label Demo
-          callback {ProjectorDemo_cb()}
+          callback {StencilDemo_cb()}
           xywh {56 203 225 40} labelfont 1
         }
         Fl_Button {} {
           label Save
-          callback {SaveProjector_cb()}
+          callback {SaveStencil_cb()} selected
           xywh {56 258 225 40} labelfont 1
         }
       }
@@ -57,12 +57,12 @@ class GUI {open
   } {
     code {scene->Save();} {}
   }
-  Function {ProjectorDemo_cb()} {open
+  Function {StencilDemo_cb()} {open
   } {
-    code {scene->ProjectorDemo();} {}
+    code {scene->StencilDemo();} {}
   }
-  Function {SaveProjector_cb()} {open
+  Function {SaveStencil_cb()} {open
   } {
-    code {scene->SaveProjector();} {}
+    code {scene->SaveStencil();} {}
   }
 } 

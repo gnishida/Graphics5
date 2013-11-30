@@ -79,7 +79,7 @@ bool IsIntersectWithTriangle(
 	//float3 u = v1 - v0;
 	//float3 v = v2 - v0;
 
-	//float uu = dot(v1 - v0, v1 - v0);
+	float uu = dot(v1 - v0, v1 - v0);
 	float vv = dot(v2 - v0, v2 - v0);
 	//float uv = dot(v1 - v0, v2 - v0);
 	float wu = dot(p - v0, v1 - v0);
@@ -87,13 +87,12 @@ bool IsIntersectWithTriangle(
 
 	//denom = uu * vv;
 	//s = vv * wu / denom;
-	//s = wu / uu;
+	s = wu / uu;
 	//t = uu * wv / denom;
 	t = wv / vv;
 	//if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
-	//if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
-	if (wu <= 0.0004f || t <= 0.000001f || wu >= 399.9996f || t >= 0.999999f) return false;
-
+	if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
+	
 	return true;
 }
 

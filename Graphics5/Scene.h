@@ -41,8 +41,8 @@ public:
 	Scene();
 	void Demo();
 	void Save();
-	void ProjectorDemo();
-	void SaveProjector();
+	void StencilDemo();
+	void SaveStencil();
 	void Render();
 
 	void CreateScene1();
