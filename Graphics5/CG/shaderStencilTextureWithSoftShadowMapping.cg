@@ -73,7 +73,7 @@ bool IsIntersectWithTriangle(
 
 	if (r <= 0.000001f || r >= 0.999999f) return false;
 	
-	// test 2 (s, t, and s+t should be between 0 and 1)
+	// test 2 (s and t should be between 0 and 1)
 	float3 p = dir * r + position;
 	//float3 w = p - v0;
 	//float3 u = v1 - v0;
