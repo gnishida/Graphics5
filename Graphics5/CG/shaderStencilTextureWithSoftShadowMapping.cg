@@ -64,33 +64,23 @@ bool IsIntersectWithTriangle(
 				in float3 n,
 				out float s,
 				out float t) {
-	// test 1 (r should be between 0 and 1)
+	// test 1 (r should be greater than 0.)
 	float denom = dot(n, dir);
 	if (denom == 0.0f) return false;
 
 	float numer = dot(n, v0 - position);
 	float r = numer / denom;
 
-	if (r <= 0.000001f || r >= 0.999999f) return false;
+	if (r <= 0.000001f) return false;
 	
 	// test 2 (s and t should be between 0 and 1)
 	float3 p = dir * r + position;
-	//float3 w = p - v0;
-	//float3 u = v1 - v0;
-	//float3 v = v2 - v0;
 
-	float uu = dot(v1 - v0, v1 - v0);
-	float vv = dot(v2 - v0, v2 - v0);
-	//float uv = dot(v1 - v0, v2 - v0);
-	float wu = dot(p - v0, v1 - v0);
-	float wv = dot(p - v0, v2 - v0);
+	//s = dot(p - v0, v1 - v0) / dot(v1 - v0, v1 - v0);
+	//t = dot(p - v0, v2 - v0) / dot(v2 - v0, v2 - v0);
+	s = dot(p - v0, v1 - v0) * 0.0025;
+	t = dot(p - v0, v2 - v0) * 0.0025;
 
-	//denom = uu * vv;
-	//s = vv * wu / denom;
-	s = wu / uu;
-	//t = uu * wv / denom;
-	t = wv / vv;
-	//if (s <= 0.000001f || t <= 0.000001f || s + t >= 0.999999f) return false;
 	if (s <= 0.000001f || t <= 0.000001f || s >= 0.999999f || t >= 0.999999f) return false;
 	
 	return true;

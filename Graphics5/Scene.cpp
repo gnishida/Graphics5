@@ -50,7 +50,7 @@ Scene::Scene() {
 	TMesh* mesh = new Box(V3(-32.0f, 0.0f, -10.0f), V3(-12.0f, 20.0f, 10.0f), V3(1.0f, 0.0f, 0.0f));
 	meshes.push_back(mesh);
 
-	mesh = new Box(V3(-10.0f, 0.0f, -32.0f), V3(10.0f, 30.0f, -12.0f), V3(0.0f, 1.0f, 0.0f));
+	mesh = new Box(V3(-10.0f, 0.0f, -32.0f), V3(10.0f, 20.0f, -12.0f), V3(0.0f, 1.0f, 0.0f));
 	meshes.push_back(mesh);
 
 	mesh = new Box(V3(12.0f, 0.0f, -10.0f), V3(32.0f, 20.0f, 10.0f), V3(0.0f, 0.0f, 1.0f));
