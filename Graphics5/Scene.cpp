@@ -58,6 +58,7 @@ Scene::Scene() {
 
 	mesh = new Quad(200, 200, V3(0.0f, 1.0f, 1.0f));
 	mesh->RotateAbout(V3(1.0f, 0.0f, 0.0f), -90.0f);
+	mesh->Translate(V3(0.0f, -0.1f, 0.0f));
 	meshes.push_back(mesh);
 
 	//RenderHW();
